@@ -1,32 +1,37 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios'
+import Popup from '../../Popup.jsx'
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [popupMessage, setPopupMessage] = useState("");
   const navigate = useNavigate();
   const handleLogin = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:3002/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await response.json();
-    if (data.success) {
-      // Handle successful login
-      console.log("Login successful:", data);
-      navigate("/home"); // Redirect to home page after successful login
-    } else {
-      // Handle login error
-      console.error("Login failed:", data.message);
-      alert(data.message); // Show error message to user
+    try {
+      const response = await axios.post("http://localhost:3002/login", {
+        email,
+        password,
+      });
+
+      if (response.data.success) {
+        console.log("Login successful:", response.data);
+        navigate("/home"); // Redirect to home
+      } else {
+        setPopupMessage(response.data.message);
+      }
+    } catch (err) {
+      console.error("Login failed:", err.response?.data?.message || err.message);
+      setPopupMessage(err.response?.data?.message || "Something went wrong");
     }
   }
   return (
     <>
+      {popupMessage && (
+        <Popup message={popupMessage} onClose={() => setPopupMessage("")} />
+      )}
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <h1 className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">

@@ -1,8 +1,9 @@
 import React from "react";
+import BookLayout from "../BookLayout";
 
 function HomePage() {
   return (
-    <h1>No books to display</h1>
+    <BookLayout />
   );
 }
 

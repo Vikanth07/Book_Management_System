@@ -25,6 +25,7 @@ createRoot(document.getElementById("root")).render(
             <Route path="recommendations" element={<RecommendationsPage />} />
             <Route path="liked-books" element={<LikedBooksPage />} />
           </Route>
+          <Route path="*" element={<h1>404 Not Found</h1>} />
         </Routes>
       </BrowserRouter>
     </CookiesProvider>

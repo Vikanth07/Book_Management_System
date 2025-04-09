@@ -1,10 +1,9 @@
 import React from "react";
-import Dashboard from "./Dashboard";
 
 function HomePage() {
-    return ( 
-        <Dashboard />
-    );
+  return (
+    <h1>No books to display</h1>
+  );
 }
 
 export default HomePage;

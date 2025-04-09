@@ -30,7 +30,7 @@ function Login() {
       if (success) {
         sessionStorage.removeItem("toastShown");
         setTimeout(() => {
-          navigate("/home");
+          navigate("/dashboard");
         }, 1000);
       } else {
         handleError(message);

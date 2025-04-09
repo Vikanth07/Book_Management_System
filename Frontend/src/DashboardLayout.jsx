@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Home, BookOpen, Menu, LogOut, Star, Heart } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
-const Dashboard = () => {
+const DashboardLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [cookies, removeCookie] = useCookies([]);
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const Dashboard = () => {
           { withCredentials: true }
         );
         const { status, user } = data;
-  
+
         if (status) {
           if (!sessionStorage.getItem("toastShown")) {
             toast(`Hello ${user}`, {
@@ -40,9 +40,10 @@ const Dashboard = () => {
         }
       }
     };
-  
+
     verifyCookie();
-  }, [cookies, navigate, removeCookie]);  
+  }, [cookies, navigate, removeCookie]);
+
   const handleLogout = () => {
     removeCookie("token");
     navigate("/");
@@ -71,18 +72,17 @@ const Dashboard = () => {
           </div>
           <nav className="mt-4 space-y-2">
             <div className="px-4">
-              <Link className="flex items-center py-2 text-gray-700 hover:bg-blue-100 transition rounded-md">
+              <Link
+                to="/dashboard"
+                className="flex items-center py-2 text-gray-700 hover:bg-blue-100 transition rounded-md"
+              >
                 <Home className="w-5 h-5" />
-                {isSidebarOpen && (
-                  <span className="ml-3" onClick={toggleSidebar}>
-                    Home
-                  </span>
-                )}
+                {isSidebarOpen && <span className="ml-3">Home</span>}
               </Link>
             </div>
             <div className="px-4">
               <Link
-                to="/add-book"
+                to="/dashboard/add-book"
                 className="flex items-center py-2 text-gray-700 hover:bg-blue-100 transition rounded-md"
               >
                 <BookOpen className="w-5 h-5" />
@@ -91,7 +91,7 @@ const Dashboard = () => {
             </div>
             <div className="px-4">
               <Link
-                to="/recommendations"
+                to="/dashboard/recommendations"
                 className="flex items-center py-2 text-gray-700 hover:bg-blue-100 transition rounded-md"
               >
                 <Star className="w-5 h-5" />
@@ -100,7 +100,7 @@ const Dashboard = () => {
             </div>
             <div className="px-4">
               <Link
-                to="/liked-books"
+                to="/dashboard/liked-books"
                 className="flex items-center py-2 text-gray-700 hover:bg-blue-100 rounded-md transition"
               >
                 <Heart className="w-5 h-5" />
@@ -137,9 +137,8 @@ const Dashboard = () => {
           </div>
         </header>
 
-        <main className="p-6">
-          {/* Content goes here */}
-          <p>Welcome to the Book Management System!</p>
+        <main className="p-6 overflow-y-auto">
+          <Outlet />
         </main>
       </div>
       <ToastContainer />
@@ -147,4 +146,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardLayout;

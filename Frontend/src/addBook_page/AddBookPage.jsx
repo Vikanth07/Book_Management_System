@@ -2,8 +2,10 @@ import React from "react";
 import AddBook from "./AddBook";
 
 function AddBookPage() {
-    return ( 
+    return (
+        <>
         <AddBook />
+        </>
     );
 }
 

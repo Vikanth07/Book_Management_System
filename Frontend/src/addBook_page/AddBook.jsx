@@ -1,23 +1,47 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
 
 const AddBook = () => {
   const [bookTitle, setBookTitle] = useState('');
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    toast.success(`Book "${bookTitle}" added successfully!`, {
-      position: 'top-right',
-      autoClose: 2000,
-      onClose: () => navigate('/dashboard'),
-    });
-
-    setBookTitle('');
-    setFile(null);
+  
+    if (!file) {
+      toast.error('Please upload a PDF file');
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('title', bookTitle);
+    formData.append('pdfFile', file); 
+  
+    try {
+      const res = await axios.post('http://localhost:3002/api/books', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
+      });
+  
+      if (res.status === 200) {
+        toast.success(`Book "${bookTitle}" added successfully!`, {
+          position: 'top-right',
+          autoClose: 2000,
+          onClose: () => navigate('/dashboard'),
+        });
+  
+        setBookTitle('');
+        setFile(null);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to upload book');
+    }
   };
 
   return (

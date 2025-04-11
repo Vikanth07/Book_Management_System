@@ -20,7 +20,7 @@ app.use(cors(
 ));
 
 app.use('/', authRoute);
-app.use('/', bookRoute);
+app.use('/api', bookRoute);
 
 mongoose.connect(uri);
 

@@ -11,10 +11,6 @@ function Login() {
     toast.error(err, {
       position: "bottom-left",
     });
-  const handleSuccess = (msg) =>
-    toast.success(msg, {
-      position: "bottom-right",
-    });
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -26,12 +22,10 @@ function Login() {
         },
         { withCredentials: true }
       );
-      const { success, message } = data;
+      const { success, message} = data;
       if (success) {
         sessionStorage.removeItem("toastShown");
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 1000);
+        navigate("/dashboard");
       } else {
         handleError(message);
         sessionStorage.removeItem("toastShown");

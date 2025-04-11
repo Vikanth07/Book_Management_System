@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 const DashboardLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [cookies, removeCookie] = useCookies([]);
+  const [user, setUser] = useState("");
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -25,8 +26,8 @@ const DashboardLayout = () => {
           { withCredentials: true }
         );
         const { status, user } = data;
-
         if (status) {
+          setUser(user);
           if (!sessionStorage.getItem("toastShown")) {
             toast(`Hello ${user}`, {
               position: "top-right",
@@ -131,9 +132,9 @@ const DashboardLayout = () => {
           </h1>
           <div className="flex items-center space-x-4">
             <div className="w-8 h-8 rounded-full bg-blue-400 text-white flex items-center justify-center font-bold">
-              V
+              {user.charAt(0).toUpperCase()}
             </div>
-            <span className="text-gray-800 font-medium">Vikanth</span>
+            <span className="text-gray-800 font-medium">{user}</span>
           </div>
         </header>
 

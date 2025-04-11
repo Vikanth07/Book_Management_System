@@ -38,7 +38,7 @@ function Signup() {
         sessionStorage.removeItem("toastShown");
         setTimeout(() => {
           navigate("/");
-        }, 1000);
+        }, 3000);
       } else {
         handleError(message);
         sessionStorage.removeItem("toastShown");

@@ -1,32 +1,21 @@
-require("dotenv").config();
+const express = require("express");
+const multer = require("multer");
 const {
   postBooks,
   getBooks,
   getBookById,
   updateBookById,
-  deleteBookById,
+  deleteBookById
 } = require("../controllers/BookController");
-const router = require("express").Router();
-const multer = require("multer");
-const GridFsStorage = require("multer-gridfs-storage");
 
-
-const storage = new GridFsStorage({
-  url: process.env.MONGO_URI,
-  file: (req, file) => ({
-    filename: `${Date.now()}-${file.originalname}`,
-    bucketName: "uploads",
-  })
-});
-
+const router = express.Router();
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-router.post("/api/books", upload.single("pdfFile"), postBooks);
-router.get("/api/books", getBooks);
-router.get("/api/books/:id", getBookById);
-router.delete("/api/books/:id", deleteBookById);
-router.put("/api/books/:id", upload.single("pdf"), updateBookById);
-
-
+router.post("/books", upload.single("pdfFile"), postBooks);
+router.get("/books", getBooks);
+router.get("/books/:id", getBookById);
+router.put("/books/:id", upload.single("pdfFile"), updateBookById);
+router.delete("/books/:id", deleteBookById);
 
 module.exports = router;

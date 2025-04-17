@@ -134,7 +134,7 @@ const DashboardLayout = () => {
             <div className="w-8 h-8 rounded-full bg-blue-400 text-white flex items-center justify-center font-bold">
               {user.charAt(0).toUpperCase()}
             </div>
-            <span className="text-gray-800 font-medium">{user}</span>
+            <span className="text-gray-800 font-medium">{user.charAt(0).toUpperCase()+user.substring(1)}</span>
           </div>
         </header>
 

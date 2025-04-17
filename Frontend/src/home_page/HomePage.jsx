@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BookLayout from "../BookLayout";
 import toast, { Toaster } from "react-hot-toast";
+import SearchBar from "../SearchBar";
 
 const HomePage = () => {
   const [books, setBooks] = useState([]);
+  const [selectedBook, setSelectedBook] = useState(null);
 
   useEffect(() => {
     axios
@@ -20,6 +22,7 @@ const HomePage = () => {
       });
       if (res.status === 200) {
         setBooks((prev) => prev.filter((book) => book._id !== id));
+        if (selectedBook && selectedBook._id === id) setSelectedBook(null);
         toast.success("Book deleted successfully");
       }
     } catch (err) {
@@ -45,6 +48,9 @@ const HomePage = () => {
             book._id === id ? { ...book, title: newTitle } : book
           )
         );
+        if (selectedBook && selectedBook._id === id) {
+          setSelectedBook({ ...selectedBook, title: newTitle });
+        }
         toast.success("Book updated successfully");
         return true;
       }
@@ -58,15 +64,27 @@ const HomePage = () => {
   return (
     <div className="p-4">
       <Toaster position="bottom-right" />
+      <div className="mb-4">
+        <SearchBar books={books} onSelectBook={setSelectedBook} />
+      </div>
+
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {books.map((book) => (
+        {selectedBook ? (
           <BookLayout
-            key={book._id}
-            book={book}
+            book={selectedBook}
             onDelete={handleDelete}
             onUpdate={handleUpdate}
           />
-        ))}
+        ) : (
+          books.map((book) => (
+            <BookLayout
+              key={book._id}
+              book={book}
+              onDelete={handleDelete}
+              onUpdate={handleUpdate}
+            />
+          ))
+        )}
       </div>
     </div>
   );

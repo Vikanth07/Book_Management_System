@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const AddBook = () => {
   const [bookTitle, setBookTitle] = useState('');
+  const [authorName, setAuthorName] = useState('');
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
@@ -18,6 +19,7 @@ const AddBook = () => {
   
     const formData = new FormData();
     formData.append('title', bookTitle);
+    formData.append('author', authorName);
     formData.append('pdfFile', file); 
   
     try {
@@ -36,6 +38,7 @@ const AddBook = () => {
         });
   
         setBookTitle('');
+        setAuthorName('');
         setFile(null);
       }
     } catch (error) {
@@ -61,6 +64,19 @@ const AddBook = () => {
               onChange={(e) => setBookTitle(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
               placeholder="Enter book title"
+              required
+            />
+          </div>
+          <div>
+            <label className="block mb-1 text-sm font-medium text-gray-700">
+              Author Name
+            </label>
+            <input
+              type="text"
+              value={authorName}
+              onChange={(e) => setAuthorName(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              placeholder="Enter author name"
               required
             />
           </div>

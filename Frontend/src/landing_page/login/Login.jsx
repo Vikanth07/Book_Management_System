@@ -25,7 +25,9 @@ function Login() {
       const { success, message} = data;
       if (success) {
         sessionStorage.removeItem("toastShown");
-        navigate("/dashboard");
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1000);
       } else {
         handleError(message);
         sessionStorage.removeItem("toastShown");
@@ -91,7 +93,6 @@ function Login() {
                   </a>
                 </div>
                 <button
-                  type="submit"
                   className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 >
                   Sign in

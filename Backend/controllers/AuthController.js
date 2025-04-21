@@ -106,7 +106,9 @@ module.exports.Login = async (req, res) => {
 
     res.cookie("token", token, {
       withCredentials: true,
-      httpOnly: false, 
+      httpOnly: true,
+      secure: true,          // ✅ only send on HTTPS
+      sameSite: 'None',      // ✅ allow cross-origin
     });
 
     const otp = generateOTP();

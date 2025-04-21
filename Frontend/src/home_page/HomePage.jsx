@@ -3,8 +3,10 @@ import axios from "axios";
 import BookLayout from "../BookLayout";
 import toast, { Toaster } from "react-hot-toast";
 import SearchBar from "../SearchBar";
-import bookBoxImage from '../assets/reading1.png'; 
+import bookBoxImage from '../assets/reading1.png';
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const HomePage = () => {
   const [books, setBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
@@ -32,26 +34,34 @@ const HomePage = () => {
     }
   };
 
-  const handleUpdate = async (id, newTitle, newPdf) => {
+  const handleUpdate = async (id, newTitle, newAuthor, newPdf) => {
     const formData = new FormData();
     formData.append("title", newTitle);
+    formData.append("author", newAuthor);
     if (newPdf) formData.append("pdfFile", newPdf);
 
     try {
-      const res = await axios.put(
-        `${API_BASE_URL}/api/books/${id}`,
-        formData,
-        { withCredentials: true }
-      );
+      const res = await axios.put(`${API_BASE_URL}/api/books/${id}`, formData, {
+        withCredentials: true,
+      });
+
       if (res.status === 200) {
         setBooks((prev) =>
           prev.map((book) =>
-            book._id === id ? { ...book, title: newTitle } : book
+            book._id === id
+              ? { ...book, title: newTitle, author: newAuthor }
+              : book
           )
         );
+
         if (selectedBook && selectedBook._id === id) {
-          setSelectedBook({ ...selectedBook, title: newTitle });
+          setSelectedBook({
+            ...selectedBook,
+            title: newTitle,
+            author: newAuthor,
+          });
         }
+
         toast.success("Book updated successfully");
         return true;
       }
@@ -59,26 +69,26 @@ const HomePage = () => {
       console.error("Update failed", err);
       toast.error("Failed to update book");
     }
+
     return false;
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f3e8ff] via-[#e5dbff] to-[#f8f0fc] p-6">
-
       <Toaster position="bottom-right" />
       <div className="mb-6">
         <h2 className="text-3xl font-bold text-purple-700 mb-3">
-          📚Step Into Your Book World
+          📚 Step Into Your Book World
         </h2>
         <SearchBar books={books} onSelectBook={setSelectedBook} />
       </div>
-  
+
       <img
         src={bookBoxImage}
         alt="Books in a box"
         className="absolute bottom-5 right-10 w-40 h-40 object-contain pointer-events-none"
       />
-  
+
       {selectedBook && (
         <div className="mb-6 p-4 bg-white rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl">
           <BookLayout
@@ -88,7 +98,7 @@ const HomePage = () => {
           />
         </div>
       )}
-  
+
       <div
         className={`grid gap-6 ${
           selectedBook
@@ -108,7 +118,6 @@ const HomePage = () => {
       </div>
     </div>
   );
-  
 };
 
 export default HomePage;

@@ -7,7 +7,13 @@ import "react-toastify/dist/ReactToastify.css";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) => {
+const BookLayout = ({
+  book,
+  onDelete,
+  onUpdate,
+  readOnly = false,
+  onUnlike,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(book.title);
   const [newAuthor, setNewAuthor] = useState(book.author || "");
@@ -18,7 +24,7 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
   const [userEmails, setUserEmails] = useState([]);
 
   const handleSave = async () => {
-    const success = await onUpdate(book._id, newTitle, newPdf, newAuthor);
+    const success = await onUpdate(book._id, newTitle, newAuthor, newPdf);
     if (success) setIsEditing(false);
   };
 
@@ -92,27 +98,31 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
   return (
     <>
       <div className="relative bg-gradient-to-br from-[#ffe9d6] via-[#ffd5ba] to-[#ffc3a3] p-3 rounded-lg shadow-lg w-40 h-55 hover:scale-105 transition-transform duration-200 group mt-4 border border-orange-200 hover:border-orange-400">
-
-        {/* Editing Mode */}
-        {isEditing && !readOnly && (
-          <div className="absolute inset-0 bg-black bg-opacity-80 z-50 p-4 rounded-xl flex flex-col justify-between text-white">
+        {isEditing && !readOnly ? (
+          <div className="absolute inset-0 bg-white z-50 p-3 rounded-xl flex flex-col justify-center text-black">
+            <label className="text-xs font-semibold mb-1">Title:</label>
             <input
-              className="border px-2 py-1 mb-2 text-sm rounded-lg focus:outline-none text-black"
+              className="border px-2 py-1 mb-2 text-sm rounded-lg focus:outline-none"
               value={newTitle}
               placeholder="Book Title"
               onChange={(e) => setNewTitle(e.target.value)}
             />
+
+            <label className="text-xs font-semibold mb-1">Author:</label>
             <input
-              className="border px-2 py-1 mb-2 text-sm rounded-lg focus:outline-none text-black"
+              className="border px-2 py-1 mb-2 text-sm rounded-lg focus:outline-none"
               value={newAuthor}
               placeholder="Author Name"
               onChange={(e) => setNewAuthor(e.target.value)}
             />
+
+            <label className="text-xs font-semibold mb-1">Replace PDF:</label>
             <input
               type="file"
-              className="mb-2 text-xs text-white"
+              className="mb-3 text-xs"
               onChange={(e) => setNewPdf(e.target.files[0])}
             />
+
             <div className="flex justify-between gap-2 text-xs">
               <button
                 className="bg-green-500 text-white px-2 py-1 rounded-lg w-full"
@@ -128,20 +138,23 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
               </button>
             </div>
           </div>
-        )}
-
-        {/* Normal Display Mode */}
-        {!isEditing && (
+        ) : (
           <>
             <div className="flex items-center justify-between relative">
               <div className="w-[65%]">
                 <h3 className="text-lg font-semibold text-black truncate">
                   {book.title}
                 </h3>
-                <p className="text-sm text-black-100 truncate">by {book.author}</p>
+                <p className="text-sm text-black-100 truncate">
+                  by {book.author}
+                </p>
               </div>
               <div className="flex items-center gap-3 text-lg relative">
-                <button onClick={handleLikeToggle} className="focus:outline-none" title={isLiked ? "Unlike" : "Like"}>
+                <button
+                  onClick={handleLikeToggle}
+                  className="focus:outline-none"
+                  title={isLiked ? "Unlike" : "Like"}
+                >
                   {isLiked ? (
                     <FaHeart className="text-red-500" />
                   ) : (
@@ -149,12 +162,14 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
                   )}
                 </button>
                 <button onClick={handleShareClick}>
-                  <FaShare className="text-white cursor-pointer hover:text-gray-300" title="Share" />
+                  <FaShare
+                    title="Share"
+                    className="text-white cursor-pointer hover:text-gray-300"
+                  />
                 </button>
               </div>
             </div>
 
-            {/* Buttons */}
             <div className="absolute bottom-2 left-2 right-2 hidden group-hover:flex flex-col gap-2 z-10">
               <button
                 className="bg-blue-500 text-white py-2 px-4 rounded-full text-xs font-semibold shadow-md hover:bg-blue-600"
@@ -183,7 +198,6 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
         )}
       </div>
 
-      {/* PDF Reader */}
       {isReading && (
         <PDFReader
           fileUrl={`${API_BASE_URL}/api/books/${book.pdfFile}`}
@@ -193,13 +207,14 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
         />
       )}
 
-      {/* Share Modal */}
       {showShareModal && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg p-6 w-96">
             <h2 className="text-xl font-bold mb-4">Share Book</h2>
             <div className="max-h-48 overflow-y-auto mb-4">
-              <p className="font-semibold text-sm mb-2">Select a user to share with:</p>
+              <p className="font-semibold text-sm mb-2">
+                Select a user to share with:
+              </p>
               {userEmails.map((email) => (
                 <div
                   key={email}

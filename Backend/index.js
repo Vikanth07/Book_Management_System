@@ -14,6 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors(
   {
+    origin: 'https://book-management-system-omega.vercel.app',
     credentials: true,
   }  
 ));

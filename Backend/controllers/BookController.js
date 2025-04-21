@@ -102,6 +102,7 @@ module.exports.postBooks = async (req, res) => {
 module.exports.getBooks = async (req, res) => {
   try {
     const token = req.cookies.token;
+    console.log("Token:", token);
     if (!token) return res.status(401).json({ message: "No token" });
 
     const decoded = jwt.verify(token, process.env.TOKEN_KEY);

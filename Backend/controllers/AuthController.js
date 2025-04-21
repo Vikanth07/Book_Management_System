@@ -156,7 +156,9 @@ module.exports.verifyOTP = async (req, res) => {
     const token = createSecretToken(user._id);
     res.cookie("token", token, {
       withCredentials: true,
-      httpOnly: false,
+      httpOnly: true,
+      secure: true,          // ✅ only send on HTTPS
+      sameSite: 'None',      // ✅ allow cross-origin
     });
 
     res.status(200).json({ success: true, message: "OTP verified. Login successful!" });

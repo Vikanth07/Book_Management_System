@@ -185,7 +185,7 @@ const BookLayout = ({
 
       {isReading && (
         <PDFReader
-          fileUrl={`http://localhost:3002/api/books/${book.pdfFile}`}
+          fileUrl={`${API_BASE_URL}/api/books/${book.pdfFile}`}
           title={book.title}
           bookId={book._id}
           onClose={() => setIsReading(false)}

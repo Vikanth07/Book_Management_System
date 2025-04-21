@@ -39,6 +39,7 @@ function Otp() {
       );
 
       if (data.success) {
+
         toast.success("OTP verified successfully!",{
           position: "top-right",
           toastId: "otpVerified",
@@ -46,6 +47,7 @@ function Otp() {
         sessionStorage.removeItem("emailForOtp");
 
         if (sessionStorage.getItem("otpFlow") === "forgot") {
+          console.log("this is ",sessionStorage.getItem("otpFlow"));
           sessionStorage.removeItem("otpFlow");
           navigate("/reset-password");
         } else {

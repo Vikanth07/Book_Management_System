@@ -18,35 +18,45 @@ const DashboardLayout = () => {
   };
 
   useEffect(() => {
+    if (typeof cookies.token === "undefined") return; 
     const verifyCookie = async () => {
       if (!cookies.token) {
+        console.log("token not found", cookies.token);
         navigate("/");
       } else {
-        const { data } = await axios.post(
-          `${API_BASE_URL}`,
-          {},
-          { withCredentials: true }
-        );
-        const { status, user } = data;
-        if (status) {
-          setUser(user);
-          if (!sessionStorage.getItem("toastShown")) {
-            toast(`Hello ${user}`, {
-              position: "top-right",
-              toastId: "welcome",
-            });
-            sessionStorage.setItem("toastShown", "true");
+        console.log("token found", cookies.token);
+        try {
+          const { data } = await axios.post(
+            `${API_BASE_URL}`,
+            {},
+            { withCredentials: true }
+          );
+          const { status, user } = data;
+  
+          if (status) {
+            setUser(user);
+            if (!sessionStorage.getItem("toastShown")) {
+              toast(`Hello ${user}`, {
+                position: "top-right",
+                toastId: "welcome",
+              });
+              sessionStorage.setItem("toastShown", "true");
+            }
+          } else {
+            removeCookie("token");
+            navigate("/");
           }
-        } else {
+        } catch (err) {
+          console.error("Verification error:", err);
           removeCookie("token");
           navigate("/");
         }
       }
     };
-
+  
     verifyCookie();
-  }, [cookies, navigate, removeCookie]);
-
+  }, [cookies.token]);
+  
   const handleLogout = () => {
     removeCookie("token");
     navigate("/");

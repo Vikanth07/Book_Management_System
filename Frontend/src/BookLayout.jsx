@@ -4,15 +4,10 @@ import PDFReader from "./PDFReader";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const BookLayout = ({
-  book,
-  onDelete,
-  onUpdate,
-  readOnly = false,
-  onUnlike,
-}) => {
+const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(book.title);
   const [newPdf, setNewPdf] = useState(null);
@@ -43,7 +38,7 @@ const BookLayout = ({
         autoClose: 2000,
       });
       if (onUnlike && !res.data.isLiked) {
-        onUnlike(book._id); // Notify parent to remove it
+        onUnlike(book._id);
       }
     } catch (err) {
       console.error("Failed to toggle like:", err);
@@ -96,10 +91,12 @@ const BookLayout = ({
   return (
     <>
       <div className="relative bg-gradient-to-br from-[#ffe9d6] via-[#ffd5ba] to-[#ffc3a3] p-3 rounded-lg shadow-lg w-40 h-55 hover:scale-105 transition-transform duration-200 group mt-4 border border-orange-200 hover:border-orange-400">
-        {isEditing && !readOnly ? (
-          <div className="absolute inset-0 bg-black z-20 p-4 rounded-xl flex flex-col justify-between">
+
+        {/* Editing Overlay */}
+        {isEditing && !readOnly && (
+          <div className="absolute inset-0 bg-black bg-opacity-80 z-50 p-4 rounded-xl flex flex-col justify-between text-white">
             <input
-              className="border px-2 py-1 mb-2 text-sm rounded-lg focus:outline-none"
+              className="border px-2 py-1 mb-2 text-sm rounded-lg focus:outline-none text-black"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
             />
@@ -116,30 +113,27 @@ const BookLayout = ({
                 Save
               </button>
               <button
-                className="bg-gray-300 text-gray-700 px-2 py-1 rounded-lg w-full"
+                className="bg-gray-300 text-gray-800 px-2 py-1 rounded-lg w-full"
                 onClick={() => setIsEditing(false)}
               >
                 Cancel
               </button>
             </div>
           </div>
-        ) : (
+        )}
+
+        {/* Display Mode */}
+        {!isEditing && (
           <>
             <div className="flex items-center justify-between relative">
               <div className="w-[65%]">
                 <h3 className="text-lg font-semibold text-black truncate">
                   {book.title}
                 </h3>
-                <p className="text-sm text-black-100 truncate">
-                  by {book.author}
-                </p>
+                <p className="text-sm text-black-100 truncate">by {book.author}</p>
               </div>
               <div className="flex items-center gap-3 text-lg relative">
-                <button
-                  onClick={handleLikeToggle}
-                  className="focus:outline-none"
-                  title={isLiked ? "Unlike" : "Like"}
-                >
+                <button onClick={handleLikeToggle} className="focus:outline-none" title={isLiked ? "Unlike" : "Like"}>
                   {isLiked ? (
                     <FaHeart className="text-red-500" />
                   ) : (
@@ -147,14 +141,12 @@ const BookLayout = ({
                   )}
                 </button>
                 <button onClick={handleShareClick}>
-                  <FaShare
-                    title="Share"
-                    className="text-white cursor-pointer hover:text-gray-300"
-                  />
+                  <FaShare className="text-white cursor-pointer hover:text-gray-300" title="Share" />
                 </button>
               </div>
             </div>
 
+            {/* Buttons */}
             <div className="absolute bottom-2 left-2 right-2 hidden group-hover:flex flex-col gap-2 z-10">
               <button
                 className="bg-blue-500 text-white py-2 px-4 rounded-full text-xs font-semibold shadow-md hover:bg-blue-600"
@@ -183,6 +175,7 @@ const BookLayout = ({
         )}
       </div>
 
+      {/* PDF Reader */}
       {isReading && (
         <PDFReader
           fileUrl={`${API_BASE_URL}/api/books/${book.pdfFile}`}
@@ -198,9 +191,7 @@ const BookLayout = ({
           <div className="bg-white rounded-lg p-6 w-96">
             <h2 className="text-xl font-bold mb-4">Share Book</h2>
             <div className="max-h-48 overflow-y-auto mb-4">
-              <p className="font-semibold text-sm mb-2">
-                Select a user to share with:
-              </p>
+              <p className="font-semibold text-sm mb-2">Select a user to share with:</p>
               {userEmails.map((email) => (
                 <div
                   key={email}

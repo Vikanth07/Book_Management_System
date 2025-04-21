@@ -5,7 +5,7 @@ const { Signup, Login, verifyOTP, forgotPassword, resetPassword } = require("../
 const { userVerification } = require('../middlewares/AuthMiddleware');
 
 router.post("/", userVerification);
-router.get("sampletest", (req, res) => {
+router.get("/sampletest", (req, res) => {
     res.send("Sample Test Route");
 });
 

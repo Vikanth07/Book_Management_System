@@ -4,20 +4,21 @@ import BookLayout from "../BookLayout";
 import toast, { Toaster } from "react-hot-toast";
 import SearchBar from "../SearchBar";
 import bookBoxImage from '../assets/reading1.png'; 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const HomePage = () => {
   const [books, setBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3002/api/books", { withCredentials: true })
+      .get(`${API_BASE_URL}/api/books`, { withCredentials: true })
       .then((res) => setBooks(res.data.books))
       .catch((err) => console.error("Failed to fetch books", err));
   }, []);
 
   const handleDelete = async (id) => {
     try {
-      const res = await axios.delete(`http://localhost:3002/api/books/${id}`, {
+      const res = await axios.delete(`${API_BASE_URL}/api/books/${id}`, {
         withCredentials: true,
       });
       if (res.status === 200) {
@@ -38,7 +39,7 @@ const HomePage = () => {
 
     try {
       const res = await axios.put(
-        `http://localhost:3002/api/books/${id}`,
+        `${API_BASE_URL}/api/books/${id}`,
         formData,
         { withCredentials: true }
       );

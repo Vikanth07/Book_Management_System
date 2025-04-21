@@ -9,6 +9,7 @@ import {
   Save,
   XCircle,
 } from "lucide-react";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const AccountPage = () => {
   const [info, setInfo] = useState(null);
@@ -17,7 +18,7 @@ const AccountPage = () => {
 
   const fetchInfo = async () => {
     try {
-      const res = await axios.get("http://localhost:3002/api/account-info", {
+      const res = await axios.get(`${API_BASE_URL}/api/account-info`, {
         withCredentials: true,
       });
       setInfo(res.data);
@@ -35,7 +36,7 @@ const AccountPage = () => {
     e.preventDefault();
     try {
       await axios.put(
-        "http://localhost:3002/api/account-info",
+        `${API_BASE_URL}/api/account-info`,
         {
           email: info.email,
           username: newUsername,

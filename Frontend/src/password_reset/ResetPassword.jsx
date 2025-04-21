@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
@@ -18,7 +19,7 @@ const ResetPassword = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:3002/reset-password",
+        `${API_BASE_URL}/reset-password`,
         {
           email,
           newPassword,

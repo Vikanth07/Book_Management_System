@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BookOpen } from "lucide-react";
 import bookBoxImage from '../assets/sharebook1.png'; 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Recommendations = () => {
   const [books, setBooks] = useState([]);
@@ -10,7 +11,7 @@ const Recommendations = () => {
 
   const fetchRecommendations = async () => {
     try {
-      const res = await axios.get("http://localhost:3002/api/showrecommendations", {
+      const res = await axios.get(`${API_BASE_URL}/api/showrecommendations`, {
         withCredentials: true,
       });
       setBooks(res.data);

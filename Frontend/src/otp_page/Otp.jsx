@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Otp() {
   const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
@@ -32,7 +33,7 @@ function Otp() {
     const otp = otpDigits.join("");
     try {
       const { data } = await axios.post(
-        "http://localhost:3002/verify-otp",
+        `${API_BASE_URL}/verify-otp`,
         { email, otp },
         { withCredentials: true }
       );

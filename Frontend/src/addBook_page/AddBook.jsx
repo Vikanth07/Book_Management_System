@@ -4,7 +4,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import { BookOpen } from 'lucide-react';
 import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
-import bookBoxImage from '../assets/addbook1.png'; 
+import bookBoxImage from '../assets/addbook1.png';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const AddBook = () => {
   const [bookTitle, setBookTitle] = useState('');
@@ -24,7 +25,7 @@ const AddBook = () => {
     formData.append('pdfFile', file);
     try {
       const res = await axios.post(
-        'http://localhost:3002/api/books',
+        `${API_BASE_URL}/api/books`,
         formData,
         { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
       );

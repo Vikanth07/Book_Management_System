@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BookLayout from "../BookLayout";
 import { Heart } from "lucide-react";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function LikedBooks() {
   const [likedBooks, setLikedBooks] = useState([]);
 
   const fetchLikedBooks = async () => {
     try {
-      const res = await axios.get("http://localhost:3002/api/test", {
+      const res = await axios.get(`${API_BASE_URL}/api/test`, {
         withCredentials: true,
       });
       setLikedBooks(res.data);

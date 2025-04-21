@@ -4,7 +4,8 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { Lock } from "lucide-react";
 import "react-toastify/dist/ReactToastify.css";
-import bookBoxImage from '../assets/forgotpassword.png'; 
+import bookBoxImage from '../assets/forgotpassword.png';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:3002/forgot-password",
+        `${API_BASE_URL}/forgot-password`,
         { email },
         { withCredentials: true }
       );

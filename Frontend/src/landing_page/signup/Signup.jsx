@@ -4,6 +4,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { Mail, Lock, User, BookOpen } from "lucide-react";
 import "react-toastify/dist/ReactToastify.css";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Signup() {
   const [username, setUsername] = useState("");
@@ -30,7 +31,7 @@ function Signup() {
     }
     try {
       const { data } = await axios.post(
-        "http://localhost:3002/signup",
+        `${API_BASE_URL}/signup`,
         { username, email, password },
         { withCredentials: true }
       );

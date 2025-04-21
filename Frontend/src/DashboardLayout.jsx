@@ -5,6 +5,7 @@ import { useCookies } from "react-cookie";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 const DashboardLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -22,7 +23,7 @@ const DashboardLayout = () => {
         navigate("/");
       } else {
         const { data } = await axios.post(
-          "http://localhost:3002",
+          `${API_BASE_URL}`,
           {},
           { withCredentials: true }
         );

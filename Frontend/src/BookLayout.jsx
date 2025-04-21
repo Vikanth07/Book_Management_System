@@ -4,6 +4,7 @@ import PDFReader from "./PDFReader";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const BookLayout = ({
   book,
@@ -32,7 +33,7 @@ const BookLayout = ({
   const handleLikeToggle = async () => {
     try {
       const res = await axios.patch(
-        `http://localhost:3002/api/books/${book._id}/like`,
+        `${API_BASE_URL}/api/books/${book._id}/like`,
         {},
         { withCredentials: true }
       );
@@ -55,7 +56,7 @@ const BookLayout = ({
 
   const fetchEmails = async () => {
     try {
-      const res = await axios.get("http://localhost:3002/api/users/emails", {
+      const res = await axios.get(`${API_BASE_URL}/api/users/emails`, {
         withCredentials: true,
       });
       setUserEmails(res.data);
@@ -74,7 +75,7 @@ const BookLayout = ({
   const handleShareWithUser = async (email) => {
     try {
       await axios.post(
-        `http://localhost:3002/api/books/${book._id}/share`,
+        `${API_BASE_URL}/api/books/${book._id}/share`,
         { email },
         { withCredentials: true }
       );

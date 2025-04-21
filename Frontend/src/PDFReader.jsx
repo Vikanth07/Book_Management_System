@@ -6,6 +6,7 @@ import "@react-pdf-viewer/page-navigation/lib/styles/index.css";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const PDFReader = ({ fileUrl, title, bookId, onClose, onProgress }) => {
   const [lastPage, setLastPage] = useState(0);
@@ -21,7 +22,7 @@ const PDFReader = ({ fileUrl, title, bookId, onClose, onProgress }) => {
     const fetchProgress = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3002/api/books/${bookId}/progress`,
+          `${API_BASE_URL}/api/books/${bookId}/progress`,
           { withCredentials: true }
         );
         const savedPage = res.data?.progress || 0;
@@ -66,7 +67,7 @@ const PDFReader = ({ fileUrl, title, bookId, onClose, onProgress }) => {
     const saveProgress = setTimeout(() => {
       axios
         .post(
-          `http://localhost:3002/api/books/${bookId}/progress`,
+          `${API_BASE_URL}/api/books/${bookId}/progress`,
           { progress: currentPage, totalPages:e.doc.numPages },
           { withCredentials: true }
         )

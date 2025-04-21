@@ -14,8 +14,6 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors(
   {
-    origin: [
-      'https://book-management-system-gamma.vercel.app'],
     credentials: true,
   }  
 ));
@@ -31,8 +29,7 @@ conn.once('open', () => {
   initGFS(conn); 
 });
 
-// app.listen(PORT, () => {
-//   console.log(`Server is running on port ${PORT}`);
-// });
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
-module.exports = app;

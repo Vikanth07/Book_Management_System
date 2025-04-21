@@ -10,6 +10,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(book.title);
+  const [newAuthor, setNewAuthor] = useState(book.author || "");
   const [newPdf, setNewPdf] = useState(null);
   const [isReading, setIsReading] = useState(false);
   const [isLiked, setIsLiked] = useState(book.isLiked || false);
@@ -17,7 +18,7 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
   const [userEmails, setUserEmails] = useState([]);
 
   const handleSave = async () => {
-    const success = await onUpdate(book._id, newTitle, newPdf);
+    const success = await onUpdate(book._id, newTitle, newPdf, newAuthor);
     if (success) setIsEditing(false);
   };
 
@@ -92,17 +93,24 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
     <>
       <div className="relative bg-gradient-to-br from-[#ffe9d6] via-[#ffd5ba] to-[#ffc3a3] p-3 rounded-lg shadow-lg w-40 h-55 hover:scale-105 transition-transform duration-200 group mt-4 border border-orange-200 hover:border-orange-400">
 
-        {/* Editing Overlay */}
+        {/* Editing Mode */}
         {isEditing && !readOnly && (
           <div className="absolute inset-0 bg-black bg-opacity-80 z-50 p-4 rounded-xl flex flex-col justify-between text-white">
             <input
               className="border px-2 py-1 mb-2 text-sm rounded-lg focus:outline-none text-black"
               value={newTitle}
+              placeholder="Book Title"
               onChange={(e) => setNewTitle(e.target.value)}
             />
             <input
+              className="border px-2 py-1 mb-2 text-sm rounded-lg focus:outline-none text-black"
+              value={newAuthor}
+              placeholder="Author Name"
+              onChange={(e) => setNewAuthor(e.target.value)}
+            />
+            <input
               type="file"
-              className="mb-2 text-xs"
+              className="mb-2 text-xs text-white"
               onChange={(e) => setNewPdf(e.target.files[0])}
             />
             <div className="flex justify-between gap-2 text-xs">
@@ -122,7 +130,7 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
           </div>
         )}
 
-        {/* Display Mode */}
+        {/* Normal Display Mode */}
         {!isEditing && (
           <>
             <div className="flex items-center justify-between relative">

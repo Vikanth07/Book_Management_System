@@ -38,7 +38,10 @@ function Otp() {
       );
 
       if (data.success) {
-        toast.success("OTP verified successfully!");
+        toast.success("OTP verified successfully!",{
+          position: "top-right",
+          toastId: "otpVerified",
+        });
         sessionStorage.removeItem("emailForOtp");
 
         if (sessionStorage.getItem("otpFlow") === "forgot") {

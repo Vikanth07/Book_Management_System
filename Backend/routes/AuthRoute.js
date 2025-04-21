@@ -4,7 +4,6 @@ const router = express.Router();
 const { Signup, Login, verifyOTP, forgotPassword, resetPassword } = require("../controllers/AuthController");
 const { userVerification } = require('../middlewares/AuthMiddleware');
 
-// Optional: Health check or auth middleware route
 router.post("/", userVerification);
 
 

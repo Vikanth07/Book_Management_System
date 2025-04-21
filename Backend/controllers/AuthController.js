@@ -42,41 +42,41 @@ module.exports.Signup = async (req, res, next) => {
   }
 };
 
-module.exports.Login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+// module.exports.Login = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ success: false, message: "All fields are required" });
-    }
+//     if (!email || !password) {
+//       return res.status(400).json({ success: false, message: "All fields are required" });
+//     }
 
-    const user = await UserModel.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ success: false, message: "User not found" });
-    }
+//     const user = await UserModel.findOne({ email });
+//     if (!user) {
+//       return res.status(400).json({ success: false, message: "User not found" });
+//     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ success: false, message: "Invalid password" });
-    }
+//     const isPasswordValid = await bcrypt.compare(password, user.password);
+//     if (!isPasswordValid) {
+//       return res.status(401).json({ success: false, message: "Invalid password" });
+//     }
 
-    const token = createSecretToken(user._id);
+//     const token = createSecretToken(user._id);
 
-    res.cookie("token", token, {
-      withCredentials: true,
-      httpOnly: false, 
-    });
+//     res.cookie("token", token, {
+//       withCredentials: true,
+//       httpOnly: false, 
+//     });
 
-    return res.status(200).json({
-      success: true,
-      message: "User logged in successfully",
-      userId: user._id,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Login failed", error: error.message });
-  }
-};
+//     return res.status(200).json({
+//       success: true,
+//       message: "User logged in successfully",
+//       userId: user._id,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, message: "Login failed", error: error.message });
+//   }
+// };
 
 // STEP 1: Login - Check credentials and send OTP
 module.exports.Login = async (req, res) => {
@@ -102,6 +102,13 @@ module.exports.Login = async (req, res) => {
 
     console.log("Password is valid");
 
+    const token = createSecretToken(user._id);
+
+    res.cookie("token", token, {
+      withCredentials: true,
+      httpOnly: false, 
+    });
+
     const otp = generateOTP();
     user.otp = { code: otp }; // No expiry
     await user.save();
@@ -117,11 +124,17 @@ module.exports.Login = async (req, res) => {
 
     console.log("OTP sent to email");
 
-    res.status(200).json({ success: true, message: "OTP sent to your email" });
+    // res.status(200).json({ success: true, message: "OTP sent to your email" });
+
+    return res.status(200).json({
+      success: true,
+      message: "User logged in successfully",
+      userId: user._id,
+    });
 
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, message: "Server error" });
+    res.status(500).json({ success: false, message: "Login failed", error: error.message });
   }
 };
 

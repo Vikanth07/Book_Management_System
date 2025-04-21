@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BookOpen } from "lucide-react";
+import startimg from "../assets/page2.jpg"; 
 
 const StartPage = () => {
   const navigate = useNavigate();
@@ -78,7 +79,7 @@ const StartPage = () => {
           transition={{ type: "spring", stiffness: 60, delay: 0.4 }}
         >
           <img
-            src="./src/assets/page2.jpg"
+            src={startimg}
             alt="Books"
             className="rounded-2xl shadow-xl w-full h-auto"
           />

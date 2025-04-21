@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Home,
-  BookOpen,
-  Menu,
-  LogOut,
-  Star,
-  Heart,
-} from "lucide-react";
+import { Home, BookOpen, Menu, LogOut, Star, Heart } from "lucide-react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
@@ -92,33 +85,26 @@ const DashboardLayout = () => {
       >
         <div>
           <div className="p-4 flex items-center space-x-2">
-            <button
-              onClick={toggleSidebar}
-              className="text-gray-700 hover:scale-110 transition"
-              title="Toggle Sidebar"
-            >
-              
-            </button>
             <div className="p-4 flex items-center space-x-2">
-  <button
-    onClick={toggleSidebar}
-    className="text-gray-700 hover:scale-110 transition flex items-center space-x-3"
-    title="Toggle Sidebar"
-  >
-    {isSidebarOpen ? (
-      <Menu className="animate-bounce-slow text-gray-700 w-8 h-8 transition-all duration-300" />
-    ) : (
-      <div className="w-6 h-8 relative transition-all duration-300">
-        <span className="absolute left-1/2 top-0 transform -translate-x-1/2 w-1.5 h-full bg-purple-600 rounded transition-all duration-300 rotate-90"></span>
-      </div>
-    )}
-    {isSidebarOpen && (
-      <span className="text-xl font-bold text-purple-700">Menu</span>
-    )}
-  </button>
-</div>
-
-
+              <button
+                onClick={toggleSidebar}
+                className="text-gray-700 hover:scale-110 transition flex items-center space-x-3"
+                title="Toggle Sidebar"
+              >
+                {isSidebarOpen ? (
+                  <Menu className="animate-bounce-slow text-gray-700 w-8 h-8 transition-all duration-300" />
+                ) : (
+                  <div className="w-6 h-8 relative transition-all duration-300">
+                    <span className="absolute left-1/2 top-0 transform -translate-x-1/2 w-1.5 h-full bg-purple-600 rounded transition-all duration-300 rotate-90"></span>
+                  </div>
+                )}
+                {isSidebarOpen && (
+                  <span className="text-xl font-bold text-purple-700">
+                    Menu
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
 
           <nav className="mt-6 space-y-3">
@@ -146,7 +132,9 @@ const DashboardLayout = () => {
           >
             <LogOut className="text-red-600 animate-bounce-slow" />
 
-            {isSidebarOpen && <span className="ml-3 font-semibold">Logout</span>}
+            {isSidebarOpen && (
+              <span className="ml-3 font-semibold">Logout</span>
+            )}
           </button>
         </div>
       </aside>
@@ -156,7 +144,7 @@ const DashboardLayout = () => {
         {/* Topbar */}
         <header className="bg-white shadow-md p-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent flex items-center space-x-2">
-          <BookOpen className="animate-wiggle text-purple-600" />
+            <BookOpen className="animate-wiggle text-purple-600" />
             <span>BookVerse Dashboard</span>
           </h1>
 
@@ -168,7 +156,9 @@ const DashboardLayout = () => {
             >
               {user.charAt(0).toUpperCase()}
             </Link>
-            <span className="text-gray-800 font-medium hidden sm:inline">{user}</span>
+            <span className="text-gray-800 font-medium hidden sm:inline">
+              {user}
+            </span>
           </div>
         </header>
 

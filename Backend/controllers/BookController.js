@@ -13,6 +13,57 @@ module.exports.initGFS = (conn) => {
   console.log("GridFS initialized...");
 };
 
+module.exports.getAccountInfo = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ message: "No token" });
+
+    const decoded = jwt.verify(token, process.env.TOKEN_KEY);
+    const userId = decoded.id;
+
+    const user = await UserModel.findById(userId);
+    const totalBooks = await BookModel.countDocuments({ userId });
+
+    res.status(200).json({
+      username: user.username,
+      email: user.email,
+      totalBooks,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching account info", error: err.message });
+  }
+};
+
+module.exports.updateAccountInfo = async (req, res) => {
+  try {
+    const { email, username } = req.body;
+
+    if (!email || !username) {
+      return res.status(400).json({ message: "Email and username required" });
+    }
+
+    const user = await UserModel.findOneAndUpdate(
+      { email },
+      { username },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      username: user.username,
+      email: user.email,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Update failed", error: err.message });
+  }
+};
+
+
+
+
 module.exports.postBooks = async (req, res) => {
   try {
     const token = req.cookies.token;

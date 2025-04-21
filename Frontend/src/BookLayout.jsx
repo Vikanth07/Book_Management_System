@@ -88,11 +88,12 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
 
   return (
     <>
-      <div className="relative bg-white p-4 rounded-xl shadow-md w-40 h-40 hover:scale-105 transition-transform duration-300 group mt-4">
+<div className="relative bg-gradient-to-br from-[#ffe9d6] via-[#ffd5ba] to-[#ffc3a3] p-3 rounded-lg shadow-lg w-40 h-55 hover:scale-105 transition-transform duration-200 group mt-4 border border-orange-200 hover:border-orange-400">
+
         {isEditing && !readOnly ? (
-          <div className="absolute inset-0 bg-white z-20 p-2 rounded-xl flex flex-col justify-between">
+          <div className="absolute inset-0 bg-black z-20 p-4 rounded-xl flex flex-col justify-between">
             <input
-              className="border px-2 py-1 mb-2 text-sm rounded"
+              className="border px-2 py-1 mb-2 text-sm rounded-lg focus:outline-none"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
             />
@@ -103,13 +104,13 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
             />
             <div className="flex justify-between gap-2 text-xs">
               <button
-                className="bg-green-500 text-white px-2 py-1 rounded w-full"
+                className="bg-green-500 text-white px-2 py-1 rounded-lg w-full"
                 onClick={handleSave}
               >
                 Save
               </button>
               <button
-                className="bg-gray-300 px-2 py-1 rounded w-full"
+                className="bg-gray-300 text-gray-700 px-2 py-1 rounded-lg w-full"
                 onClick={() => setIsEditing(false)}
               >
                 Cancel
@@ -120,12 +121,10 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
           <>
             <div className="flex items-center justify-between relative">
               <div className="w-[65%]">
-                <h3 className="text-sm font-semibold truncate">{book.title}</h3>
-                <p className="text-xs text-gray-500 truncate">
-                  by {book.author}
-                </p>
+                <h3 className="text-lg font-semibold text-black truncate">{book.title}</h3>
+                <p className="text-sm text-black-100 truncate">by {book.author}</p>
               </div>
-              <div className="flex items-center gap-2 text-lg relative">
+              <div className="flex items-center gap-3 text-lg relative">
                 <button
                   onClick={handleLikeToggle}
                   className="focus:outline-none"
@@ -134,21 +133,21 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
                   {isLiked ? (
                     <FaHeart className="text-red-500" />
                   ) : (
-                    <FaRegHeart className="text-gray-400" />
+                    <FaRegHeart className="text-gray-200 hover:text-red-500" />
                   )}
                 </button>
                 <button onClick={handleShareClick}>
                   <FaShare
                     title="Share"
-                    className="text-gray-500 cursor-pointer hover:text-gray-700"
+                    className="text-white cursor-pointer hover:text-gray-300"
                   />
                 </button>
               </div>
             </div>
 
-            <div className="absolute bottom-2 left-2 right-2 hidden group-hover:flex flex-col gap-1 z-10">
+            <div className="absolute bottom-2 left-2 right-2 hidden group-hover:flex flex-col gap-2 z-10">
               <button
-                className="bg-blue-500 text-white text-xs py-1 rounded"
+                className="bg-blue-500 text-white py-2 px-4 rounded-full text-xs font-semibold shadow-md hover:bg-blue-600"
                 onClick={() => setIsReading(true)}
               >
                 Read
@@ -156,13 +155,13 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
               {!readOnly && (
                 <>
                   <button
-                    className="bg-yellow-500 text-white text-xs py-1 rounded"
+                    className="bg-yellow-500 text-white py-2 px-4 rounded-full text-xs font-semibold shadow-md hover:bg-yellow-600"
                     onClick={() => setIsEditing(true)}
                   >
                     Update
                   </button>
                   <button
-                    className="bg-red-500 text-white text-xs py-1 rounded"
+                    className="bg-red-500 text-white py-2 px-4 rounded-full text-xs font-semibold shadow-md hover:bg-red-600"
                     onClick={handleDelete}
                   >
                     Delete

@@ -11,19 +11,30 @@ import HomePage from "../src/home_page/HomePage.jsx";
 import AddBookPage from "../src/addBook_page/AddBookPage.jsx";
 import RecommendationsPage from '../src/recommendations_page/Recommendations_page.jsx';
 import LikedBooksPage from '../src/liked_books/LikedBooksPage.jsx';
+import OtpPage from "../src/otp_page/OtpPage.jsx";
+import ForgotPassword from "../src/password_reset/ForgotPassword.jsx";
+import ResetPassword from "../src/password_reset/ResetPassword.jsx";
+import AccountPage from "./account/AccountPage.jsx";
+import StartPage from "./pages/StartPage.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <CookiesProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
+        <Route path="/" element={<StartPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/otp" element={<OtpPage />} /> 
+          <Route path="/forgot-password" element={<ForgotPassword />} /> 
+          <Route path="/reset-password" element={<ResetPassword />} /> 
+       
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<HomePage />} />
             <Route path="add-book" element={<AddBookPage />} />
             <Route path="recommendations" element={<RecommendationsPage />} />
             <Route path="liked-books" element={<LikedBooksPage />} />
+            <Route path="account" element={<AccountPage />} />
           </Route>
           <Route path="*" element={<h1>404 Not Found</h1>} />
         </Routes>

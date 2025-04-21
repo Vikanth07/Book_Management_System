@@ -23,6 +23,7 @@
     "@syncfusion/ej2-react-pdfviewer": "^29.1.37",
     "@tailwindcss/vite": "^4.1.2",
     "axios": "^1.8.4",
+    "framer-motion": "^12.7.4",
     "lucide-react": "^0.487.0",
     "react": "^19.0.0",
     "react-circular-progressbar": "^2.2.0",

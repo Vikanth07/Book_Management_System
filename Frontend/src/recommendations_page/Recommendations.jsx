@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { BookOpen } from "lucide-react";
+import bookBoxImage from '../assets/sharebook1.png'; 
 
 const Recommendations = () => {
   const [books, setBooks] = useState([]);
@@ -25,38 +27,66 @@ const Recommendations = () => {
   }, []);
 
   return (
-    <div className="p-6 min-h-screen bg-gray-100">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Recommended for You</h2>
+    <div className="min-h-screen bg-gradient-to-br from-[#f3e8ff] via-[#e5dbff] to-[#f8f0fc] p-6">
+      {/* Page Heading */}
+      <h2 className="text-5xl sm:text-4xl font-extrabold text-center bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent tracking-wide">
+  <BookOpen className="w-8 h-8 text-purple-500 animate-pulse" />
+  Recommended for You
+</h2>
 
+
+      {/* Subtitle */}
+      <div className="mb-8">
+      <p className="text-5xl sm:text-3xl font-extrabold text-center bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent tracking-wide">
+      Books handpicked for your taste!
+</p>
+
+      </div>
+
+      {/* Loading / Error / Empty States */}
       {loading ? (
-        <p className="text-gray-500">Loading...</p>
+        <p className="text-center text-gray-500 text-lg animate-pulse">
+          Fetching your book recs...
+        </p>
       ) : error ? (
-        <div className="text-red-500 text-center">{error}</div>
+        <div className="text-red-500 text-center font-semibold">{error}</div>
       ) : books.length === 0 ? (
         <div className="flex justify-center items-center h-64">
-          <h1 className="text-xl font-semibold text-gray-600">No Recommendations</h1>
+          <h1 className="text-xl font-semibold text-gray-600">😕 No Recommendations</h1>
         </div>
       ) : (
-        <div className="flex flex-wrap gap-4">
+        /* Books Grid */
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
           {books.map((book) => (
             <div
               key={book._id}
-              className="bg-white p-4 rounded-xl shadow-md w-40 h-40 hover:scale-105 transition-transform duration-300 relative"
+              className="bg-white/50 backdrop-blur-md border border-purple-200 rounded-2xl shadow-md p-4 transition-transform hover:scale-105 duration-300 relative flex flex-col justify-between animate-fadeIn"
             >
-              <h3 className="text-sm font-semibold truncate">{book.title}</h3>
-              <p className="text-xs text-gray-500 truncate mb-2">by {book.author}</p>
+              <div>
+                <h3 className="text-md font-bold text-gray-800 truncate mb-1">
+                  📘 {book.title}
+                </h3>
+                <p className="text-sm text-gray-500 truncate">by {book.author}</p>
+              </div>
               <a
                 href={`http://localhost:3002/api/books/${book.pdfFile}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-blue-500 text-white text-xs py-1 px-2 rounded absolute bottom-2 left-2 right-2 text-center"
+                className="mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm text-center py-1.5 px-3 rounded-xl font-medium hover:opacity-90 transition"
               >
-                Read
+                📖 Read Now
               </a>
             </div>
           ))}
         </div>
       )}
+
+      {/* Decorative Image */}
+      <img
+        src={bookBoxImage}
+        alt="Books in a box"
+        className="fixed top-18 right-8 w-45 h-45 object-contain pointer-events-none"
+      />
     </div>
   );
 };

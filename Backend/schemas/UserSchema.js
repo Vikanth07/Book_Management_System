@@ -15,6 +15,9 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  otp: {
+    code: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

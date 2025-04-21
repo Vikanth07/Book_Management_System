@@ -16,9 +16,12 @@ const {
   shareBook,
 } = require("../controllers/BookController");
 
+
 const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
+const { getAccountInfo } = require("../controllers/BookController");
+const { updateAccountInfo} = require("../controllers/BookController");
 
 router.post("/books", upload.single("pdfFile"), postBooks);
 router.get("/books", getBooks);
@@ -33,5 +36,8 @@ router.get("/users/emails",getAllEmails);
 router.get("/showrecommendations", test);
 router.post("/books/:bookId/share",shareBook);
 router.post("/books/:id/total-pages", saveTotalPages);
+
+router.get("/account-info", getAccountInfo);
+router.put("/account-info", updateAccountInfo);
 
 module.exports = router;

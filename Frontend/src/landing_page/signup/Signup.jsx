@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { Mail, Lock, User, BookOpen } from "lucide-react";
+import "react-toastify/dist/ReactToastify.css";
 
 function Signup() {
   const [username, setUsername] = useState("");
@@ -9,36 +11,34 @@ function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
+
   const handleError = (err) =>
     toast.error(err, {
       position: "bottom-left",
     });
+
   const handleSuccess = (msg) =>
     toast.success(msg, {
       position: "bottom-right",
     });
+
   const handleSignup = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       handleError("Passwords do not match.");
+      return;
     }
     try {
-      const {data} = await axios.post(
+      const { data } = await axios.post(
         "http://localhost:3002/signup",
-        {
-          username,
-          email,
-          password,
-        },
+        { username, email, password },
         { withCredentials: true }
       );
-      const {success, message} = data
+      const { success, message } = data;
       if (success) {
         handleSuccess(message);
         sessionStorage.removeItem("toastShown");
-        setTimeout(() => {
-          navigate("/");
-        }, 3000);
+        setTimeout(() => navigate("/login"), 3000);
       } else {
         handleError(message);
         sessionStorage.removeItem("toastShown");
@@ -49,130 +49,127 @@ function Signup() {
       sessionStorage.removeItem("toastShown");
     }
   };
-  return (
-    <>
-      <section className="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center px-6 py-8">
-        <div className="w-full sm:max-w-md space-y-6">
-          <div className="text-center">
-            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
-              Book Management System
-            </h1>
-          </div>
 
-          <div className="bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
-            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h2 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Create an account
-              </h2>
-              <form className="space-y-4 md:space-y-6" onSubmit={handleSignup}>
-                <div>
-                  <label
-                    htmlFor="username"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Username
-                  </label>
-                  <input
-                    type="text"
-                    name="username"
-                    id="username"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    placeholder="Your username"
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Your email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    placeholder="name@company.com"
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="confirm-password"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Confirm password
-                  </label>
-                  <input
-                    type="password"
-                    name="confirm-password"
-                    id="confirm-password"
-                    placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="flex items-start">
-                  <div className="flex items-center h-5">
-                    <input
-                      id="terms"
-                      type="checkbox"
-                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
-                      required
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="terms"
-                      className="font-light text-gray-500 dark:text-gray-300"
-                    >
-                      I accept the Terms and Conditions
-                    </label>
-                  </div>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700"
-                >
-                  Create an account
-                </button>
-                <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Already have an account?{" "}
-                  <Link
-                    to="/"
-                    className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                  >
-                    Login here
-                  </Link>
-                </p>
-              </form>
+  return (
+    <section className="min-h-screen bg-white flex items-center justify-center px-4 font-sans text-gray-800">
+      <div className="w-full max-w-md bg-white border border-gray-200 rounded-2xl shadow-xl p-8 animate-fadeIn relative">
+        {/* Floating book icon */}
+        <div className="absolute top-4 right-2 p-3 bg-white rounded-full border border-gray-200 shadow-sm">
+          <BookOpen className="text-[#845ef7] w-6 h-6" />
+        </div>
+
+        <h1 className="text-3xl font-bold text-center mb-2">
+          Join <span className="text-[#845ef7]">BookVerse</span>
+        </h1>
+        <p className="text-center text-gray-500 mb-6 text-sm">
+          Your Personal Book Universe, One Click Away 📚
+        </p>
+
+        <form onSubmit={handleSignup} className="space-y-5">
+          <div>
+            <label htmlFor="username" className="block mb-1 font-medium">
+              Username
+            </label>
+            <div className="relative">
+              <User className="absolute left-3 top-3 text-gray-400" />
+              <input
+                type="text"
+                id="username"
+                className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-[#845ef7] transition"
+                placeholder="Your username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
             </div>
           </div>
-        </div>
+
+          <div>
+            <label htmlFor="email" className="block mb-1 font-medium">
+              Email
+            </label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-3 text-gray-400" />
+              <input
+                type="email"
+                id="email"
+                className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-[#845ef7] transition"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="password" className="block mb-1 font-medium">
+              Password
+            </label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-3 text-gray-400" />
+              <input
+                type="password"
+                id="password"
+                className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-[#845ef7] transition"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="confirmPassword" className="block mb-1 font-medium">
+              Confirm Password
+            </label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-3 text-gray-400" />
+              <input
+                type="password"
+                id="confirmPassword"
+                className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-[#845ef7] transition"
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center text-sm mt-1 text-gray-500">
+            <input
+              type="checkbox"
+              id="terms"
+              className="w-4 h-4 border-gray-300 rounded mr-2"
+              required
+            />
+            <label htmlFor="terms">
+              I accept the <span className="underline">Terms and Conditions</span>
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-2 bg-gradient-to-r from-[#845ef7] to-[#d946ef] hover:opacity-90 text-white font-semibold rounded-full transition duration-300 shadow-md hover:scale-105"
+          >
+            Create Account
+          </button>
+
+          <p className="text-center text-sm mt-3 text-gray-500">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="underline font-semibold text-[#845ef7] hover:text-[#d946ef]"
+            >
+              Login here
+            </Link>
+          </p>
+        </form>
         <ToastContainer />
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
 

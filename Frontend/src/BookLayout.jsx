@@ -5,7 +5,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) => {
+const BookLayout = ({
+  book,
+  onDelete,
+  onUpdate,
+  readOnly = false,
+  onUnlike,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(book.title);
   const [newPdf, setNewPdf] = useState(null);
@@ -76,7 +82,7 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
         position: "bottom-right",
         autoClose: 2000,
       });
-      setShowShareModal(false); 
+      setShowShareModal(false);
     } catch (err) {
       console.error("Failed to share book:", err);
       toast.error("Share failed. Please try again.", {
@@ -88,8 +94,7 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
 
   return (
     <>
-<div className="relative bg-gradient-to-br from-[#ffe9d6] via-[#ffd5ba] to-[#ffc3a3] p-3 rounded-lg shadow-lg w-40 h-55 hover:scale-105 transition-transform duration-200 group mt-4 border border-orange-200 hover:border-orange-400">
-
+      <div className="relative bg-gradient-to-br from-[#ffe9d6] via-[#ffd5ba] to-[#ffc3a3] p-3 rounded-lg shadow-lg w-40 h-55 hover:scale-105 transition-transform duration-200 group mt-4 border border-orange-200 hover:border-orange-400">
         {isEditing && !readOnly ? (
           <div className="absolute inset-0 bg-black z-20 p-4 rounded-xl flex flex-col justify-between">
             <input
@@ -121,8 +126,12 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
           <>
             <div className="flex items-center justify-between relative">
               <div className="w-[65%]">
-                <h3 className="text-lg font-semibold text-black truncate">{book.title}</h3>
-                <p className="text-sm text-black-100 truncate">by {book.author}</p>
+                <h3 className="text-lg font-semibold text-black truncate">
+                  {book.title}
+                </h3>
+                <p className="text-sm text-black-100 truncate">
+                  by {book.author}
+                </p>
               </div>
               <div className="flex items-center gap-3 text-lg relative">
                 <button
@@ -188,7 +197,9 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
           <div className="bg-white rounded-lg p-6 w-96">
             <h2 className="text-xl font-bold mb-4">Share Book</h2>
             <div className="max-h-48 overflow-y-auto mb-4">
-              <p className="font-semibold text-sm mb-2">Select a user to share with:</p>
+              <p className="font-semibold text-sm mb-2">
+                Select a user to share with:
+              </p>
               {userEmails.map((email) => (
                 <div
                   key={email}

@@ -1,36 +1,48 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Otp() {
   const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
+  const [isVerifying, setIsVerifying] = useState(false);
   const inputRefs = useRef([]);
   const navigate = useNavigate();
   const email = sessionStorage.getItem("emailForOtp");
+
+  useEffect(() => {
+    inputRefs.current[0]?.focus();
+  }, []);
 
   const handleChange = (index, value) => {
     if (/^\d?$/.test(value)) {
       const newOtp = [...otpDigits];
       newOtp[index] = value;
       setOtpDigits(newOtp);
-
       if (value && index < 5) {
-        inputRefs.current[index + 1].focus();
+        inputRefs.current[index + 1]?.focus();
       }
     }
   };
 
   const handleKeyDown = (e, index) => {
     if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
-      inputRefs.current[index - 1].focus();
+      inputRefs.current[index - 1]?.focus();
     }
   };
 
   const handleVerify = async (e) => {
     e.preventDefault();
     const otp = otpDigits.join("");
+    if (otp.length !== 6) {
+      toast.error("Please enter a valid 6-digit OTP.");
+      return;
+    }
+
+    setIsVerifying(true);
     try {
       const { data } = await axios.post(
         `${API_BASE_URL}/verify-otp`,
@@ -39,15 +51,13 @@ function Otp() {
       );
 
       if (data.success) {
-
-        toast.success("OTP verified successfully!",{
+        toast.success("OTP verified successfully!", {
           position: "top-right",
           toastId: "otpVerified",
         });
         sessionStorage.removeItem("emailForOtp");
 
         if (sessionStorage.getItem("otpFlow") === "forgot") {
-          console.log("this is ",sessionStorage.getItem("otpFlow"));
           sessionStorage.removeItem("otpFlow");
           navigate("/reset-password");
         } else {
@@ -60,14 +70,16 @@ function Otp() {
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Server error");
+    } finally {
+      setIsVerifying(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-[#f3e8ff] via-[#e5dbff] to-[#f8f0fc] px-4">
+    <div className="flex justify-center items-center min-h-screen px-4 bg-gradient-to-br from-[#f3e8ff] via-[#e5dbff] to-[#f8f0fc]">
       <form
         onSubmit={handleVerify}
-        className="bg-white/50 backdrop-blur-md border border-purple-200 rounded-2xl shadow-xl p-8 w-full max-w-md animate-fadeIn"
+        className="w-full max-w-md bg-white/70 backdrop-blur-lg p-8 rounded-2xl shadow-xl animate-fadeIn border border-purple-200"
       >
         <h2 className="text-3xl font-extrabold text-center mb-6 bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent">
           🔐 Enter OTP
@@ -78,7 +90,10 @@ function Otp() {
             <input
               key={index}
               type="text"
+              inputMode="numeric"
+              pattern="\d*"
               maxLength="1"
+              aria-label={`OTP digit ${index + 1}`}
               value={digit}
               onChange={(e) => handleChange(index, e.target.value)}
               onKeyDown={(e) => handleKeyDown(e, index)}
@@ -90,10 +105,16 @@ function Otp() {
 
         <button
           type="submit"
-          className="w-full bg-gradient-to-r from-[#845ef7] to-[#d946ef] text-white py-2 rounded-xl font-medium hover:opacity-90 transition"
+          disabled={isVerifying}
+          className={`w-full py-2 rounded-xl font-medium transition ${
+            isVerifying
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-gradient-to-r from-[#845ef7] to-[#d946ef] text-white hover:opacity-90"
+          }`}
         >
-          ✅ Verify OTP
+          {isVerifying ? "Verifying..." : "✅ Verify OTP"}
         </button>
+
         <ToastContainer position="top-right" />
       </form>
     </div>

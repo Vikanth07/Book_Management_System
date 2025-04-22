@@ -29,7 +29,7 @@ function LikedBooks() {
   if (likedBooks.length === 0) {
     return (
       <div className="flex justify-center items-center h-screen bg-gradient-to-br from-[#f3e8ff] via-[#e5dbff] to-[#f8f0fc]">
-        <h1 className="text-3xl font-bold text-gray-700 animate-pulse">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-700 animate-pulse">
           💔 No Liked Books
         </h1>
       </div>
@@ -38,16 +38,19 @@ function LikedBooks() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f3e8ff] via-[#e5dbff] to-[#f8f0fc] p-6">
-      <h1 className="text-3xl font-extrabold text-center mb-8 bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent flex items-center justify-center gap-2">
+      {/* Heading */}
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-8 bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent flex items-center justify-center gap-2">
         <Heart className="w-6 h-6 text-pink-500 animate-ping-slow" />
         Your Liked Books
       </h1>
-      <p className="text-3xl font-extrabold text-center mb-8 bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent flex items-center justify-center gap-2">
-  Books that touched your soul✨
-</p>
 
+      {/* Subtitle */}
+      <p className="text-2xl sm:text-3xl font-extrabold text-center mb-8 bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent flex items-center justify-center gap-2">
+        Books that touched your soul✨
+      </p>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 animate-fadeIn">
+      {/* Books Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 animate-fadeIn">
         {likedBooks.map((book) => (
           <BookLayout
             key={book._id}

@@ -5,26 +5,23 @@ import { useCookies } from "react-cookie";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const DashboardLayout = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [cookies, removeCookie] = useCookies([]);
   const [user, setUser] = useState("");
   const navigate = useNavigate();
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
-  };
+  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
   useEffect(() => {
-    if (typeof cookies.token === "undefined") return; 
+    if (typeof cookies.token === "undefined") return;
     const verifyCookie = async () => {
       if (!cookies.token) {
-        console.log("token not found", cookies.token);
         navigate("/");
       } else {
-        console.log("token found", cookies.token);
         try {
           const { data } = await axios.post(
             `${API_BASE_URL}`,
@@ -32,7 +29,7 @@ const DashboardLayout = () => {
             { withCredentials: true }
           );
           const { status, user } = data;
-  
+
           if (status) {
             setUser(user);
             if (!sessionStorage.getItem("toastShown")) {
@@ -53,16 +50,15 @@ const DashboardLayout = () => {
         }
       }
     };
-  
+
     verifyCookie();
   }, [cookies.token]);
-  
+
   const handleLogout = () => {
     removeCookie("token");
     navigate("/");
   };
 
-  // Navigation links with unique animated icons
   const navLinks = [
     {
       to: "/dashboard",
@@ -87,50 +83,38 @@ const DashboardLayout = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-[#f7f1ff] to-[#fceff9]">
-      {/* Sidebar */}
+    <div className="flex h-screen bg-gradient-to-br from-[#f7f1ff] to-[#fceff9] overflow-hidden">
+      {/* Sidebar (Drawer on mobile) */}
       <aside
-        className={`bg-white shadow-xl transition-all duration-500 ease-in-out flex flex-col justify-between ${
-          isSidebarOpen ? "w-64" : "w-20"
-        }`}
+        className={`fixed z-40 inset-y-0 left-0 transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } md:relative md:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-xl flex flex-col justify-between w-64 md:w-64`}
       >
         <div>
-          <div className="p-4 flex items-center space-x-2">
-            <div className="p-4 flex items-center space-x-2">
-              <button
-                onClick={toggleSidebar}
-                className="text-gray-700 hover:scale-110 transition flex items-center space-x-3"
-                title="Toggle Sidebar"
-              >
-                {isSidebarOpen ? (
-                  <Menu className="animate-bounce-slow text-gray-700 w-8 h-8 transition-all duration-300" />
-                ) : (
-                  <div className="w-6 h-8 relative transition-all duration-300">
-                    <span className="absolute left-1/2 top-0 transform -translate-x-1/2 w-1.5 h-full bg-purple-600 rounded transition-all duration-300 rotate-90"></span>
-                  </div>
-                )}
-                {isSidebarOpen && (
-                  <span className="text-xl font-bold text-purple-700">
-                    Menu
-                  </span>
-                )}
-              </button>
-            </div>
+          <div className="p-4 flex items-center justify-between md:justify-start md:space-x-2">
+            <button
+              onClick={toggleSidebar}
+              className="text-gray-700 hover:scale-110 transition flex items-center space-x-2"
+              title="Toggle Sidebar"
+            >
+              <Menu className="w-6 h-6" />
+              <span className="text-xl font-bold text-purple-700 hidden md:inline">
+                Menu
+              </span>
+            </button>
           </div>
 
-          <nav className="mt-6 space-y-3">
+          <nav className="mt-4 space-y-2">
             {navLinks.map((item, index) => (
-              <div className="px-4" key={index}>
-                <Link
-                  to={item.to}
-                  className="flex items-center py-2 px-3 text-gray-700 hover:bg-gradient-to-tr hover:from-[#d946ef] hover:to-[#845ef7] hover:text-white rounded-md transition-all duration-300 group"
-                >
-                  <span>{item.icon}</span>
-                  {isSidebarOpen && (
-                    <span className="ml-3 font-medium">{item.label}</span>
-                  )}
-                </Link>
-              </div>
+              <Link
+                to={item.to}
+                key={index}
+                className="flex items-center py-2 px-4 text-gray-700 hover:bg-gradient-to-tr hover:from-[#d946ef] hover:to-[#845ef7] hover:text-white rounded-md transition-all duration-300"
+                onClick={() => setSidebarOpen(false)}
+              >
+                <span>{item.icon}</span>
+                <span className="ml-3 font-medium">{item.label}</span>
+              </Link>
             ))}
           </nav>
         </div>
@@ -139,25 +123,31 @@ const DashboardLayout = () => {
         <div className="p-4">
           <button
             onClick={handleLogout}
-            className="flex items-center py-2 px-3 text-red-600 hover:bg-red-100 w-full rounded-md transition-all duration-300 group"
+            className="flex items-center py-2 px-3 text-red-600 hover:bg-red-100 w-full rounded-md transition-all duration-300"
           >
             <LogOut className="text-red-600 animate-bounce-slow" />
-
-            {isSidebarOpen && (
-              <span className="ml-3 font-semibold">Logout</span>
-            )}
+            <span className="ml-3 font-semibold">Logout</span>
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col h-full">
         {/* Topbar */}
-        <header className="bg-white shadow-md p-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent flex items-center space-x-2">
-            <BookOpen className="animate-wiggle text-purple-600" />
-            <span>BookVerse Dashboard</span>
-          </h1>
+        <header className="bg-white shadow-md p-4 flex justify-between items-center md:px-6">
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={toggleSidebar}
+              className="md:hidden text-gray-700 focus:outline-none"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+
+            <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent flex items-center space-x-2">
+              <BookOpen className="animate-wiggle text-purple-600" />
+              <span>BookVerse Dashboard</span>
+            </h1>
+          </div>
 
           <div className="flex items-center space-x-3">
             <Link
@@ -173,10 +163,12 @@ const DashboardLayout = () => {
           </div>
         </header>
 
-        <main className="p-6 overflow-y-auto">
+        {/* Scrollable Content */}
+        <main className="p-4 md:p-6 overflow-y-auto flex-1">
           <Outlet />
         </main>
       </div>
+
       <ToastContainer />
     </div>
   );

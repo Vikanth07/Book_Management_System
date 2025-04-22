@@ -68,7 +68,7 @@ const PDFReader = ({ fileUrl, title, bookId, onClose, onProgress }) => {
       axios
         .post(
           `${API_BASE_URL}/api/books/${bookId}/progress`,
-          { progress: currentPage, totalPages:e.doc.numPages },
+          { progress: currentPage, totalPages: e.doc.numPages },
           { withCredentials: true }
         )
         .catch((err) => {
@@ -81,13 +81,13 @@ const PDFReader = ({ fileUrl, title, bookId, onClose, onProgress }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl shadow-xl w-[90vw] h-[95vh] relative flex flex-col overflow-hidden">
+      <div className="bg-white rounded-xl shadow-xl w-[90vw] h-[90vh] md:w-[80vw] md:h-[80vh] relative flex flex-col overflow-hidden">
         <div className="flex justify-between items-center p-3 bg-gray-100">
           <div className="text-lg font-semibold flex-grow text-center">
             {title}
           </div>
           <div className="flex items-center">
-            <div className="w-10 h-10 mr-4">
+            <div className="w-10 h-10 mr-4 hidden sm:block">
               <CircularProgressbar
                 value={progress}
                 text={`${progress}%`}
@@ -120,6 +120,19 @@ const PDFReader = ({ fileUrl, title, bookId, onClose, onProgress }) => {
               />
             </Worker>
           )}
+        </div>
+
+        {/* Progress bar for smaller screens */}
+        <div className="w-full sm:hidden absolute bottom-3 left-0 p-3 flex justify-center">
+          <CircularProgressbar
+            value={progress}
+            text={`${progress}%`}
+            styles={buildStyles({
+              textSize: "20px",
+              pathColor: "#4CAF50",
+              textColor: "#333",
+            })}
+          />
         </div>
       </div>
     </div>

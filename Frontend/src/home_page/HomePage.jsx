@@ -77,18 +77,20 @@ const HomePage = () => {
     <div className="min-h-screen bg-gradient-to-br from-[#f3e8ff] via-[#e5dbff] to-[#f8f0fc] p-6">
       <Toaster position="bottom-right" />
       <div className="mb-6">
-        <h2 className="text-3xl font-bold text-purple-700 mb-3">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-purple-700 mb-3 text-center">
           📚 Step Into Your Book World
         </h2>
         <SearchBar books={books} onSelectBook={setSelectedBook} />
       </div>
 
+      {/* Decorative Image */}
       <img
         src={bookBoxImage}
         alt="Books in a box"
-        className="absolute bottom-5 right-10 w-40 h-40 object-contain pointer-events-none"
+        className="absolute bottom-5 right-10 w-32 sm:w-40 lg:w-48 object-contain pointer-events-none"
       />
 
+      {/* Selected Book Details */}
       {selectedBook && (
         <div className="mb-6 p-4 bg-white rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl">
           <BookLayout
@@ -99,11 +101,12 @@ const HomePage = () => {
         </div>
       )}
 
+      {/* Book Grid Layout */}
       <div
         className={`grid gap-6 ${
           selectedBook
-            ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
-            : "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+            ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+            : "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
         }`}
       >
         {!selectedBook &&

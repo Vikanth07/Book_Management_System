@@ -34,10 +34,10 @@ const SearchBar = ({ books, onSelectBook }) => {
   };
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full max-w-lg mx-auto px-4 sm:px-6">
       <label
         htmlFor="default-search"
-        className="mb-2 text-sm font-medium text-white sr-only"
+        className="mb-2 text-sm font-medium text-gray-700 sr-only"
       >
         Search
       </label>
@@ -65,7 +65,7 @@ const SearchBar = ({ books, onSelectBook }) => {
           id="default-search"
           value={query}
           onChange={handleChange}
-          className="block w-full p-4 pl-10 pr-10 text-sm text-gray-800 bg-purple-50 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 transition-all duration-300"
+          className="block w-full p-4 pl-10 pr-10 text-sm sm:text-base text-gray-800 bg-purple-50 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 transition-all duration-300"
           placeholder="Search by title or author..."
           required
         />
@@ -82,7 +82,7 @@ const SearchBar = ({ books, onSelectBook }) => {
       </div>
 
       {filteredBooks.length > 0 && (
-        <ul className="absolute z-10 w-full bg-white border border-purple-300 rounded-lg mt-1 shadow-lg max-h-60 overflow-y-auto text-sm">
+        <ul className="absolute z-10 w-full bg-white border border-purple-300 rounded-lg mt-1 shadow-lg max-h-60 overflow-y-auto text-sm sm:text-base">
           {filteredBooks.map((book) => (
             <li
               key={book._id}

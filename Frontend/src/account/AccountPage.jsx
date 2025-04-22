@@ -64,9 +64,9 @@ const AccountPage = () => {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4 }}
-        className="w-full max-w-xl bg-white/50 backdrop-blur-md border border-purple-200 rounded-2xl shadow-xl p-8"
+        className="w-full max-w-md sm:max-w-lg lg:max-w-xl bg-white/50 backdrop-blur-md border border-purple-200 rounded-2xl shadow-xl p-8"
       >
-        <h2 className="text-3xl font-extrabold text-center mb-6 bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent flex items-center justify-center gap-2">
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-center mb-6 bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent flex items-center justify-center gap-2">
           <User className="w-7 h-7" />
           Account Details
         </h2>

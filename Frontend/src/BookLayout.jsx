@@ -7,13 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const BookLayout = ({
-  book,
-  onDelete,
-  onUpdate,
-  readOnly = false,
-  onUnlike,
-}) => {
+const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(book.title);
   const [newAuthor, setNewAuthor] = useState(book.author || "");
@@ -97,9 +91,9 @@ const BookLayout = ({
 
   return (
     <>
-      <div className="relative bg-gradient-to-br from-[#ffe9d6] via-[#ffd5ba] to-[#ffc3a3] p-3 rounded-lg shadow-lg w-40 h-55 hover:scale-105 transition-transform duration-200 group mt-4 border border-orange-200 hover:border-orange-400">
+      <div className="relative bg-gradient-to-br from-[#ffe9d6] via-[#ffd5ba] to-[#ffc3a3] p-3 rounded-lg shadow-lg w-40 h-56 sm:w-48 sm:h-60 md:w-52 md:h-64 hover:scale-105 transition-transform duration-200 group mt-4 border border-orange-200 hover:border-orange-400">
         {isEditing && !readOnly ? (
-          <div className="absolute inset-0 bg-white z-50 p-3 rounded-xl flex flex-col justify-center text-black">
+          <div className="absolute inset-0 bg-white z-50 p-3 rounded-xl flex flex-col justify-center text-black overflow-y-auto max-h-full sm:p-4">
             <label className="text-xs font-semibold mb-1">Title:</label>
             <input
               className="border px-2 py-1 mb-2 text-sm rounded-lg focus:outline-none"
@@ -208,8 +202,8 @@ const BookLayout = ({
       )}
 
       {showShareModal && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96">
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50 px-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md sm:max-h-[80vh] overflow-y-auto">
             <h2 className="text-xl font-bold mb-4">Share Book</h2>
             <div className="max-h-48 overflow-y-auto mb-4">
               <p className="font-semibold text-sm mb-2">

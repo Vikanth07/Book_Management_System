@@ -5,6 +5,7 @@ import { BookOpen } from 'lucide-react';
 import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 import bookBoxImage from '../assets/addbook1.png';
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const AddBook = () => {
@@ -47,14 +48,13 @@ const AddBook = () => {
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-[#f3e8ff] via-[#e5dbff] to-[#f8f0fc] flex flex-col items-center justify-center px-4">
-      
       {/* Top Heading */}
       <p className="text-4xl font-extrabold text-center mb-8 bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent">
         Stack the Shelf with a new Gem
       </p>
 
       {/* Form Container */}
-      <div className="relative w-full max-w-lg bg-white/50 backdrop-blur-md border border-purple-200 rounded-2xl shadow-xl p-8 animate-fadeIn">
+      <div className="relative w-full max-w-lg sm:max-w-xl lg:max-w-2xl bg-white/50 backdrop-blur-md border border-purple-200 rounded-2xl shadow-xl p-8 animate-fadeIn">
         
         {/* Book Icon */}
         <div className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-sm">
@@ -65,11 +65,11 @@ const AddBook = () => {
         <img
           src={bookBoxImage}
           alt="Books in a box"
-          className="absolute -bottom-14 -right-10 w-40 h-40 object-contain pointer-events-none"
+          className="absolute -bottom-14 -right-10 w-32 sm:w-40 lg:w-48 object-contain pointer-events-none"
         />
 
         {/* Form Title */}
-        <h2 className="text-3xl font-extrabold text-center mb-6 bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-center mb-6 bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent">
           Add a New Book
         </h2>
 
@@ -120,7 +120,7 @@ const AddBook = () => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-center gap-4 pt-2">
+          <div className="flex flex-col sm:flex-row justify-center gap-4 pt-2">
             <button
               type="submit"
               className="bg-gradient-to-r from-[#845ef7] to-[#d946ef] text-white px-6 py-2.5 rounded-xl font-semibold hover:opacity-90 shadow-md transition"

@@ -31,17 +31,15 @@ const Recommendations = () => {
     <div className="min-h-screen bg-gradient-to-br from-[#f3e8ff] via-[#e5dbff] to-[#f8f0fc] p-6">
       {/* Page Heading */}
       <h2 className="text-5xl sm:text-4xl font-extrabold text-center bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent tracking-wide">
-  <BookOpen className="w-8 h-8 text-purple-500 animate-pulse" />
-  Recommended for You
-</h2>
-
+        <BookOpen className="w-8 h-8 text-purple-500 animate-pulse" />
+        Recommended for You
+      </h2>
 
       {/* Subtitle */}
       <div className="mb-8">
-      <p className="text-5xl sm:text-3xl font-extrabold text-center bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent tracking-wide">
-      Books handpicked for your taste!
-</p>
-
+        <p className="text-5xl sm:text-3xl font-extrabold text-center bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent tracking-wide">
+          Books handpicked for your taste!
+        </p>
       </div>
 
       {/* Loading / Error / Empty States */}
@@ -57,7 +55,7 @@ const Recommendations = () => {
         </div>
       ) : (
         /* Books Grid */
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {books.map((book) => (
             <div
               key={book._id}
@@ -86,7 +84,7 @@ const Recommendations = () => {
       <img
         src={bookBoxImage}
         alt="Books in a box"
-        className="fixed top-18 right-8 w-45 h-45 object-contain pointer-events-none"
+        className="fixed top-16 sm:top-18 right-8 w-45 h-45 object-contain pointer-events-none"
       />
     </div>
   );

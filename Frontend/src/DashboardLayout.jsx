@@ -11,7 +11,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const DashboardLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [cookies, removeCookie] = useCookies([]);
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
@@ -33,7 +33,7 @@ const DashboardLayout = () => {
           if (status) {
             setUser(user);
             if (!sessionStorage.getItem("toastShown")) {
-              toast(`Hello ${user}`, {
+              toast(`Hello ${user?.username}`, {
                 position: "top-right",
                 toastId: "welcome",
               });
@@ -89,7 +89,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="flex h-screen bg-gradient-to-br from-[#f7f1ff] to-[#fceff9] overflow-hidden">
-      {/* Sidebar (Drawer on mobile) */}
+      {/* Sidebar */}
       <aside
         className={`fixed z-40 inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -160,15 +160,15 @@ const DashboardLayout = () => {
               className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#845ef7] to-[#d946ef] text-white flex items-center justify-center font-bold hover:scale-105 transition"
               title="View Profile"
             >
-              {user.charAt(0).toUpperCase()}
+              {user?.username?.charAt(0).toUpperCase()}
             </Link>
             <span className="text-gray-800 font-medium hidden sm:inline">
-              {user}
+              {user?.username}
             </span>
           </div>
         </header>
 
-        {/* Scrollable Content */}
+        {/* Content */}
         <main className="p-4 md:p-6 overflow-y-auto flex-1">
           <Outlet />
         </main>

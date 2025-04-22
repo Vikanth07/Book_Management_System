@@ -85,7 +85,7 @@ function Otp() {
           🔐 Enter OTP
         </h2>
 
-        <div className="flex justify-between gap-2 mb-6">
+        <div className="flex justify-center flex-wrap gap-3 sm:gap-4 mb-6">
           {otpDigits.map((digit, index) => (
             <input
               key={index}
@@ -98,7 +98,7 @@ function Otp() {
               onChange={(e) => handleChange(index, e.target.value)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               ref={(el) => (inputRefs.current[index] = el)}
-              className="w-12 h-12 text-center border border-purple-300 bg-purple-50 text-lg font-semibold rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
+              className="w-12 h-12 sm:w-14 sm:h-14 text-center border border-purple-300 bg-purple-50 text-lg font-semibold rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
             />
           ))}
         </div>

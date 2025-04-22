@@ -79,28 +79,30 @@ function Otp() {
     <div className="flex justify-center items-center min-h-screen px-4 bg-gradient-to-br from-[#f3e8ff] via-[#e5dbff] to-[#f8f0fc]">
       <form
         onSubmit={handleVerify}
-        className="w-full max-w-md bg-white/70 backdrop-blur-lg p-8 rounded-2xl shadow-xl animate-fadeIn border border-purple-200"
+        className="w-full max-w-md bg-white/70 backdrop-blur-lg p-8 rounded-2xl shadow-xl border border-purple-200 animate-fadeIn"
       >
         <h2 className="text-3xl font-extrabold text-center mb-6 bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent">
           🔐 Enter OTP
         </h2>
 
-        <div className="flex justify-center flex-wrap gap-3 sm:gap-4 mb-6">
-          {otpDigits.map((digit, index) => (
-            <input
-              key={index}
-              type="text"
-              inputMode="numeric"
-              pattern="\d*"
-              maxLength="1"
-              aria-label={`OTP digit ${index + 1}`}
-              value={digit}
-              onChange={(e) => handleChange(index, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(e, index)}
-              ref={(el) => (inputRefs.current[index] = el)}
-              className="w-12 h-12 sm:w-14 sm:h-14 text-center border border-purple-300 bg-purple-50 text-lg font-semibold rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
-            />
-          ))}
+        <div className="overflow-x-auto">
+          <div className="flex justify-center gap-3 sm:gap-4 mb-6 min-w-[340px]">
+            {otpDigits.map((digit, index) => (
+              <input
+                key={index}
+                type="text"
+                inputMode="numeric"
+                pattern="\d*"
+                maxLength="1"
+                aria-label={`OTP digit ${index + 1}`}
+                value={digit}
+                onChange={(e) => handleChange(index, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                ref={(el) => (inputRefs.current[index] = el)}
+                className="w-12 h-12 sm:w-14 sm:h-14 text-center border border-purple-300 bg-purple-50 text-lg font-semibold rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
+              />
+            ))}
+          </div>
         </div>
 
         <button

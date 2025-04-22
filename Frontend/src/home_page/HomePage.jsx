@@ -3,7 +3,7 @@ import axios from "axios";
 import BookLayout from "../BookLayout";
 import toast, { Toaster } from "react-hot-toast";
 import SearchBar from "../SearchBar";
-import bookBoxImage from '../assets/reading1.png';
+import bookBoxImage from "../assets/reading1.png";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -76,18 +76,20 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f3e8ff] via-[#e5dbff] to-[#f8f0fc] p-6">
       <Toaster position="bottom-right" />
-      <div className="mb-6">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-purple-700 mb-3 text-center">
+      <div className="mb-6 w-full">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-purple-700 mb-6 text-center">
           📚 Step Into Your Book World
         </h2>
-        <SearchBar books={books} onSelectBook={setSelectedBook} />
+        <div className="w-full max-w-5xl mx-auto px-4">
+          <SearchBar books={books} onSelectBook={setSelectedBook} />
+        </div>
       </div>
 
       {/* Decorative Image */}
       <img
         src={bookBoxImage}
         alt="Books in a box"
-        className="absolute bottom-5 right-10 w-32 sm:w-40 lg:w-48 object-contain pointer-events-none"
+        className="absolute bottom-5 right-6 w-24 sm:w-28 md:w-32 lg:w-36 xl:w-40 max-w-[150px] object-contain pointer-events-none"
       />
 
       {/* Selected Book Details */}

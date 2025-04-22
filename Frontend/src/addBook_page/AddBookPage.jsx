@@ -2,11 +2,11 @@ import React from "react";
 import AddBook from "./AddBook";
 
 function AddBookPage() {
-    return (
-        <>
-        <AddBook />
-        </>
-    );
+  return (
+    <>
+      <AddBook />
+    </>
+  );
 }
 
 export default AddBookPage;

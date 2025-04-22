@@ -1,5 +1,5 @@
 import React from "react";
-import { About } from "./About.jsx";
+import About from "./About.jsx";
 
 function AboutPage() {
   return (

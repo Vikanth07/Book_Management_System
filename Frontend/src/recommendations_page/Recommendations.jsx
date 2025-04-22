@@ -70,7 +70,7 @@ const Recommendations = () => {
                 <p className="text-sm text-gray-500 truncate">by {book.author}</p>
               </div>
               <a
-                href={`http://localhost:3002/api/books/${book.pdfFile}`}
+                href={`${API_BASE_URL}/api/books/${book.pdfFile}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm text-center py-1.5 px-3 rounded-xl font-medium hover:opacity-90 transition"

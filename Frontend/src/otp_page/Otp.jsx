@@ -85,8 +85,9 @@ function Otp() {
           🔐 Enter OTP
         </h2>
 
-        <div className="overflow-x-auto">
-          <div className="flex justify-center gap-3 sm:gap-4 mb-6 min-w-[340px]">
+        {/* OTP Input Row - Fixed width container for alignment */}
+        <div className="flex justify-center mb-6">
+          <div className="flex gap-3 sm:gap-4 justify-center w-[320px] sm:w-[360px]">
             {otpDigits.map((digit, index) => (
               <input
                 key={index}

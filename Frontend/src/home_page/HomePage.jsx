@@ -85,12 +85,12 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Decorative Image */}
+      {/* Decorative Image
       <img
         src={bookBoxImage}
         alt="Books in a box"
         className="absolute bottom-5 right-6 w-24 sm:w-28 md:w-32 lg:w-36 xl:w-40 max-w-[150px] object-contain pointer-events-none"
-      />
+      /> */}
 
       {/* Selected Book Details */}
       {selectedBook && (

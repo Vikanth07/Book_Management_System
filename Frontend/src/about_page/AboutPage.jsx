@@ -3,9 +3,7 @@ import About from "./About.jsx";
 
 function AboutPage() {
   return (
-    <>
       <About />
-    </>
   );
 }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Home, BookOpen, Menu, LogOut, Star, Heart } from "lucide-react";
+import { Home, BookOpen, Menu, LogOut, Star, Heart, Info } from "lucide-react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
@@ -79,6 +79,11 @@ const DashboardLayout = () => {
       to: "/dashboard/liked-books",
       icon: <Heart className="text-red-400 animate-pulse-fast" />,
       label: "Liked Books",
+    },
+    {
+      to: "/dashboard/about",
+      icon: <Info className="text-blue-400 animate-pulse-slow" />,
+      label: "About",
     },
   ];
 

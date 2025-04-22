@@ -16,6 +16,7 @@ import ForgotPassword from "../src/password_reset/ForgotPassword.jsx";
 import ResetPassword from "../src/password_reset/ResetPassword.jsx";
 import AccountPage from "./account/AccountPage.jsx";
 import StartPage from "./pages/StartPage.jsx";
+import AboutPage from "./about_page/AboutPage.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -35,6 +36,7 @@ createRoot(document.getElementById("root")).render(
             <Route path="recommendations" element={<RecommendationsPage />} />
             <Route path="liked-books" element={<LikedBooksPage />} />
             <Route path="account" element={<AccountPage />} />
+            <Route path="about" element={<AboutPage />} />
           </Route>
           <Route path="*" element={<h1>404 Not Found</h1>} />
         </Routes>

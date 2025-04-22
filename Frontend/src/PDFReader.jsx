@@ -87,6 +87,7 @@ const PDFReader = ({ fileUrl, title, bookId, onClose, onProgress }) => {
             {title}
           </div>
           <div className="flex items-center">
+            {/* Large Circular Progress Bar for Desktop */}
             <div className="w-10 h-10 mr-4 hidden sm:block">
               <CircularProgressbar
                 value={progress}
@@ -98,6 +99,7 @@ const PDFReader = ({ fileUrl, title, bookId, onClose, onProgress }) => {
                 })}
               />
             </div>
+            {/* Close Button */}
             <button
               className="text-3xl text-gray-600 hover:text-red-600"
               onClick={onClose}
@@ -122,7 +124,7 @@ const PDFReader = ({ fileUrl, title, bookId, onClose, onProgress }) => {
           )}
         </div>
 
-        {/* Progress bar for smaller screens */}
+        {/* Smaller Circular Progress Bar for Mobile */}
         <div className="w-full sm:hidden absolute bottom-3 left-0 p-3 flex justify-center">
           <CircularProgressbar
             value={progress}

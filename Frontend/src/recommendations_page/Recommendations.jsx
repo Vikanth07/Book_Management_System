@@ -28,7 +28,7 @@ const Recommendations = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f3e8ff] via-[#e5dbff] to-[#f8f0fc] p-6">
+    <div className="min-h-screen bg-gradient-to-br from-[#f3e8ff] via-[#e5dbff] to-[#f8f0fc] p-6 relative">
       {/* Page Heading */}
       <h2 className="text-5xl sm:text-4xl font-extrabold text-center bg-gradient-to-r from-[#845ef7] to-[#d946ef] bg-clip-text text-transparent tracking-wide">
         <BookOpen className="w-8 h-8 text-purple-500 animate-pulse" />
@@ -84,7 +84,7 @@ const Recommendations = () => {
       <img
         src={bookBoxImage}
         alt="Books in a box"
-        className="fixed top-16 sm:top-18 right-8 w-45 h-45 object-contain pointer-events-none"
+        className="fixed top-16 sm:top-18 right-8 w-40 sm:w-45 h-40 sm:h-45 object-contain pointer-events-none z-10"
       />
     </div>
   );

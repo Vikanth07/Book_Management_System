@@ -82,7 +82,7 @@ const SearchBar = ({ books, onSelectBook }) => {
       </div>
 
       {filteredBooks.length > 0 && (
-        <ul className="absolute z-10 w-full bg-white border border-purple-300 rounded-lg mt-1 shadow-lg max-h-60 overflow-y-auto text-sm sm:text-base">
+        <ul className="absolute left-0 right-0 z-10 bg-white border border-purple-300 rounded-lg mt-1 shadow-lg max-h-60 overflow-y-auto text-sm sm:text-base w-full">
           {filteredBooks.map((book) => (
             <li
               key={book._id}

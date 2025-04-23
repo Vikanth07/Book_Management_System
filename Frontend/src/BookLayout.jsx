@@ -7,7 +7,13 @@ import "react-toastify/dist/ReactToastify.css";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) => {
+const BookLayout = ({
+  book,
+  onDelete,
+  onUpdate,
+  readOnly = false,
+  onUnlike,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(book.title);
   const [newAuthor, setNewAuthor] = useState(book.author || "");
@@ -202,17 +208,17 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
       )}
 
       {showShareModal && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50 px-4">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md sm:max-h-[80vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Share Book</h2>
-            <div className="max-h-48 overflow-y-auto mb-4">
-              <p className="font-semibold text-sm mb-2">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-gradient-to-br from-[#ffe9d6] via-[#ffd5ba] to-[#ffc3a3] border border-orange-300 rounded-xl p-6 w-96 shadow-lg">
+            <h2 className="text-xl font-bold mb-4 text-gray-900">Share Book</h2>
+            <div className="max-h-48 overflow-y-auto mb-4 bg-white rounded-md shadow-inner p-2">
+              <p className="font-semibold text-sm mb-2 text-gray-800">
                 Select a user to share with:
               </p>
               {userEmails.map((email) => (
                 <div
                   key={email}
-                  className="px-3 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+                  className="px-3 py-2 text-sm text-gray-700 cursor-pointer rounded-md hover:bg-orange-100 transition"
                   onClick={() => handleShareWithUser(email)}
                 >
                   {email}
@@ -220,7 +226,7 @@ const BookLayout = ({ book, onDelete, onUpdate, readOnly = false, onUnlike }) =>
               ))}
             </div>
             <button
-              className="bg-gray-300 text-white py-1 px-4 rounded-full w-full"
+              className="bg-gray-800 text-white py-1 px-4 rounded-full w-full hover:bg-gray-700 transition"
               onClick={() => setShowShareModal(false)}
             >
               Close

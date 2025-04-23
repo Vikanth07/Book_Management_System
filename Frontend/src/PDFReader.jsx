@@ -77,7 +77,7 @@ const PDFReader = ({ fileUrl, title, bookId, onClose, onProgress }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 px-2">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-[95vw] h-[90vh] md:max-w-[80vw] md:h-[85vh] relative flex flex-col overflow-hidden">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-[98vw] h-[92vh] md:max-w-[90vw] md:h-[90vh] lg:max-w-[95vw] lg:h-[95vh] relative flex flex-col overflow-hidden">
         
         {/* Header */}
         <div className="flex justify-between items-center px-4 py-2 bg-gray-100 relative">

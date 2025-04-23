@@ -1,7 +1,9 @@
+require("dotenv").config();
 const {UserModel} = require("../models/UserModel");
 const { createSecretToken } = require("../util/SecretToken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
 
 // Configure mail transporter
 const transporter = nodemailer.createTransport({
@@ -42,42 +44,6 @@ module.exports.Signup = async (req, res, next) => {
   }
 };
 
-// module.exports.Login = async (req, res) => {
-//   try {
-//     const { email, password } = req.body;
-
-//     if (!email || !password) {
-//       return res.status(400).json({ success: false, message: "All fields are required" });
-//     }
-
-//     const user = await UserModel.findOne({ email });
-//     if (!user) {
-//       return res.status(400).json({ success: false, message: "User not found" });
-//     }
-
-//     const isPasswordValid = await bcrypt.compare(password, user.password);
-//     if (!isPasswordValid) {
-//       return res.status(401).json({ success: false, message: "Invalid password" });
-//     }
-
-//     const token = createSecretToken(user._id);
-
-//     res.cookie("token", token, {
-//       withCredentials: true,
-//       httpOnly: false, 
-//     });
-
-//     return res.status(200).json({
-//       success: true,
-//       message: "User logged in successfully",
-//       userId: user._id,
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, message: "Login failed", error: error.message });
-//   }
-// };
-
 // STEP 1: Login - Check credentials and send OTP
 module.exports.Login = async (req, res) => {
   try {
@@ -107,12 +73,12 @@ module.exports.Login = async (req, res) => {
     res.cookie("token", token, {
       withCredentials: true,
       httpOnly: true,
-      secure: true,          // ✅ only send on HTTPS
-      sameSite: 'None',      // ✅ allow cross-origin
+      secure: true,          
+      sameSite: 'None',     
     });
 
     const otp = generateOTP();
-    user.otp = { code: otp }; // No expiry
+    user.otp = { code: otp }; 
     await user.save();
 
     console.log("OTP generated and saved:", otp);
@@ -130,7 +96,7 @@ module.exports.Login = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "User logged in successfully",
+      message: "OTP sent successfully",
       userId: user._id,
     });
 
@@ -159,8 +125,8 @@ module.exports.verifyOTP = async (req, res) => {
     res.cookie("token", token, {
       withCredentials: true,
       httpOnly: true,
-      secure: true,          // ✅ only send on HTTPS
-      sameSite: 'None',      // ✅ allow cross-origin
+      secure: true,          
+      sameSite: 'None',      
     });
 
     res.status(200).json({ success: true, message: "OTP verified. Login successful!" });
@@ -179,7 +145,7 @@ module.exports.forgotPassword = async (req, res) => {
     }
 
     const otp = generateOTP();
-    user.otp = { code: otp }; // Store OTP in the database
+    user.otp = { code: otp }; 
     await user.save();
 
     await transporter.sendMail({
@@ -205,7 +171,6 @@ module.exports.resetPassword = async (req, res) => {
       return res.status(400).json({ success: false, message: "User not found" });
     }
 
-    // OTP is valid, reset the password
     user.password = await bcrypt.hash(newPassword, 10);
 
     await user.save();
@@ -216,3 +181,24 @@ module.exports.resetPassword = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+module.exports.getUsername = async(req, res)=>{
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.json({ status: false, message: "Token not found" });
+    }
+    jwt.verify(token, process.env.TOKEN_KEY, async (err, data) => {
+      if (err) {
+        return res.json({ status: false, message: "Token expired" });
+      } else {
+        const user = await UserModel.findById(data.id);
+        if (user) return res.json({ status: true, user: user.username });
+        else return res.json({ status: false, message: "User not found" });
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+}

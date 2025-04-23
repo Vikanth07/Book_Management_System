@@ -117,9 +117,8 @@ function Otp() {
         >
           {isVerifying ? "Verifying..." : "✅ Verify OTP"}
         </button>
-
-        <ToastContainer position="top-right" />
       </form>
+      <ToastContainer position="top-right" />
     </div>
   );
 }

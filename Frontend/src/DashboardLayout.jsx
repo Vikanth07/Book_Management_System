@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import { Home, BookOpen, Menu, LogOut, Star, Heart, Info } from "lucide-react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
@@ -11,7 +11,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const DashboardLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [cookies, removeCookie] = useCookies([]);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState("");
   const navigate = useNavigate();
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
@@ -28,17 +28,11 @@ const DashboardLayout = () => {
             {},
             { withCredentials: true }
           );
+          console.log("Verification response:", data);
           const { status, user } = data;
 
           if (status) {
             setUser(user);
-            if (!sessionStorage.getItem("toastShown")) {
-              toast(`Hello ${user?.username}`, {
-                position: "top-right",
-                toastId: "welcome",
-              });
-              sessionStorage.setItem("toastShown", "true");
-            }
           } else {
             removeCookie("token");
             navigate("/");
@@ -53,6 +47,18 @@ const DashboardLayout = () => {
 
     verifyCookie();
   }, [cookies.token]);
+  useEffect(() => {
+    axios
+      .get(`${API_BASE_URL}/get-username`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setUser(res.data.user);
+      })
+      .catch((err) => {
+        console.error("Error fetching username:", err);
+      });
+  }, []);
 
   const handleLogout = () => {
     removeCookie("token");
@@ -160,10 +166,10 @@ const DashboardLayout = () => {
               className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#845ef7] to-[#d946ef] text-white flex items-center justify-center font-bold hover:scale-105 transition"
               title="View Profile"
             >
-              {user?.username?.charAt(0).toUpperCase()}
+              {user.charAt(0).toUpperCase() || "?"}
             </Link>
             <span className="text-gray-800 font-medium hidden sm:inline">
-              {user?.username}
+              {user}
             </span>
           </div>
         </header>

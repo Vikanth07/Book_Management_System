@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { Mail, Lock, User, BookOpen } from "lucide-react";
+import { Mail, Lock, User, BookOpen, Eye, EyeOff } from "lucide-react";
 import "react-toastify/dist/ReactToastify.css";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -11,6 +11,9 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const navigate = useNavigate();
 
   const handleError = (err) =>
@@ -25,6 +28,16 @@ function Signup() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    const hasLetter = /[a-zA-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    if (!hasLetter || !hasNumber) {
+      handleError("Password must be alphanumeric.");
+      return;
+    }
+    if (password.length < 8) {
+      handleError("Password must be at least 8 characters long.");
+      return;
+    }
     if (password !== confirmPassword) {
       handleError("Passwords do not match.");
       return;
@@ -68,7 +81,10 @@ function Signup() {
 
         <form onSubmit={handleSignup} className="space-y-5 sm:space-y-6">
           <div>
-            <label htmlFor="username" className="block mb-1 font-medium text-sm">
+            <label
+              htmlFor="username"
+              className="block mb-1 font-medium text-sm"
+            >
               Username
             </label>
             <div className="relative">
@@ -104,38 +120,56 @@ function Signup() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block mb-1 font-medium text-sm">
+            <label
+              htmlFor="password"
+              className="block mb-1 font-medium text-sm"
+            >
               Password
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-2.5 text-gray-400 w-4 h-4" />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
-                className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-[#845ef7] transition text-sm sm:text-base"
+                className="w-full pl-10 pr-10 py-2 bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-[#845ef7] transition text-sm sm:text-base"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <span
+                className="absolute right-3 top-2.5 cursor-pointer text-gray-400"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </span>
             </div>
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block mb-1 font-medium text-sm">
+            <label
+              htmlFor="confirmPassword"
+              className="block mb-1 font-medium text-sm"
+            >
               Confirm Password
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-2.5 text-gray-400 w-4 h-4" />
               <input
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 id="confirmPassword"
-                className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-[#845ef7] transition text-sm sm:text-base"
+                className="w-full pl-10 pr-10 py-2 bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-[#845ef7] transition text-sm sm:text-base"
                 placeholder="••••••••"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
+              <span
+                className="absolute right-3 top-2.5 cursor-pointer text-gray-400"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </span>
             </div>
           </div>
 
@@ -147,7 +181,8 @@ function Signup() {
               required
             />
             <label htmlFor="terms">
-              I accept the <span className="underline">Terms and Conditions</span>
+              I accept the{" "}
+              <span className="underline">Terms and Conditions</span>
             </label>
           </div>
 

@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { Mail, Lock, BookOpen } from "lucide-react";
+import { Mail, Lock, BookOpen, Eye, EyeOff } from "lucide-react";
 import "react-toastify/dist/ReactToastify.css";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleError = (err) =>
@@ -57,7 +58,10 @@ function Login() {
 
         <form onSubmit={handleLogin} className="space-y-5 sm:space-y-6">
           <div>
-            <label htmlFor="email" className="block mb-1 font-medium text-gray-700 text-sm">
+            <label
+              htmlFor="email"
+              className="block mb-1 font-medium text-gray-700 text-sm"
+            >
               Email
             </label>
             <div className="relative">
@@ -75,20 +79,33 @@ function Login() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block mb-1 font-medium text-gray-700 text-sm">
+            <label
+              htmlFor="password"
+              className="block mb-1 font-medium text-gray-700 text-sm"
+            >
               Password
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-2.5 sm:top-3 text-gray-400 w-4 h-4" />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
-                className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-[#845ef7] transition text-sm sm:text-base"
+                className="w-full pl-10 pr-10 py-2 bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-[#845ef7] transition text-sm sm:text-base"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <div
+                className="absolute right-3 top-2.5 sm:top-3 text-gray-400 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+              </div>
             </div>
           </div>
 

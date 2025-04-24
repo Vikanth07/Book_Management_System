@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { FaHeart, FaRegHeart, FaShare } from "react-icons/fa";
 import PDFReader from "./PDFReader";
 import axios from "axios";
@@ -22,6 +22,11 @@ const BookLayout = ({
   const [isLiked, setIsLiked] = useState(book.isLiked || false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [userEmails, setUserEmails] = useState([]);
+
+  const coverImage = useMemo(() => {
+    const covers = ["cover2.jpg", "cover3.jpg", "cover1.jpg", "cover5.jpg"];
+    return covers[Math.floor(Math.random() * covers.length)];
+  }, []);
 
   const handleSave = async () => {
     const success = await onUpdate(book._id, newTitle, newAuthor, newPdf);
@@ -97,7 +102,14 @@ const BookLayout = ({
 
   return (
     <>
-      <div className="relative bg-gradient-to-br from-[#ffe9d6] via-[#ffd5ba] to-[#ffc3a3] p-3 rounded-lg shadow-lg w-40 h-56 sm:w-48 sm:h-60 md:w-52 md:h-64 hover:scale-105 transition-transform duration-200 group mt-4 border border-orange-200 hover:border-orange-400">
+      <div
+        className="relative p-3 rounded-lg shadow-lg w-40 h-55 hover:scale-105 transition-transform duration-200 group mt-4 border border-orange-200 hover:border-orange-400"
+        style={{
+          backgroundImage: `url(/covers/${coverImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
         {isEditing && !readOnly ? (
           <div className="absolute inset-0 bg-white z-50 p-3 rounded-xl flex flex-col justify-center text-black overflow-y-auto max-h-full sm:p-4">
             <label className="text-xs font-semibold mb-1">Title:</label>
@@ -141,13 +153,9 @@ const BookLayout = ({
         ) : (
           <>
             <div className="flex items-center justify-between relative">
-              <div className="w-[65%]">
-                <h3 className="text-lg font-semibold text-black truncate">
-                  {book.title}
-                </h3>
-                <p className="text-sm text-black-100 truncate">
-                  by {book.author}
-                </p>
+              <div className="absolute top-5 left-1/2 transform -translate-x-1/2 text-center text-white font-semibold text-sm px-1">
+                <div>{book.title}</div>
+                <div className="text-xs italic">by {book.author}</div>
               </div>
               <div className="flex items-center gap-3 text-lg relative">
                 <button
@@ -164,7 +172,7 @@ const BookLayout = ({
                 <button onClick={handleShareClick}>
                   <FaShare
                     title="Share"
-                    className="text-white cursor-pointer hover:text-gray-300"
+                    className="text-white cursor-pointer hover:text-gray-300 ml-21"
                   />
                 </button>
               </div>

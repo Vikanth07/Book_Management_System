@@ -22,9 +22,15 @@ const generateOTP = () => {
 module.exports.Signup = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
+    
+    // Validate required fields
+    if (!username || !email || !password) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
+    }
+    
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
-      return res.json({message: "User already exists" });
+      return res.status(400).json({ success: false, message: "User already exists" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new UserModel({ username, email, password: hashedPassword });
@@ -40,7 +46,7 @@ module.exports.Signup = async (req, res, next) => {
     next();
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 

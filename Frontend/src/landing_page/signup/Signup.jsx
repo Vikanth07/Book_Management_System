@@ -43,6 +43,10 @@ function Signup() {
       return;
     }
     try {
+      if (!API_BASE_URL) {
+        handleError("API configuration error. Please check your environment variables.");
+        return;
+      }
       const { data } = await axios.post(
         `${API_BASE_URL}/signup`,
         { username, email, password },
@@ -54,12 +58,13 @@ function Signup() {
         sessionStorage.removeItem("toastShown");
         setTimeout(() => navigate("/login"), 3000);
       } else {
-        handleError(message);
+        handleError(message || "Signup failed. Please try again.");
         sessionStorage.removeItem("toastShown");
       }
     } catch (error) {
       console.error("Signup error:", error);
-      handleError("An error occurred during signup. Please try again.");
+      const errorMessage = error.response?.data?.message || error.message || "Something went wrong. Please try again.";
+      handleError(errorMessage);
       sessionStorage.removeItem("toastShown");
     }
   };

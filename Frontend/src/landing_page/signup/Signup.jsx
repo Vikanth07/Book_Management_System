@@ -44,9 +44,11 @@ function Signup() {
     }
     try {
       if (!API_BASE_URL) {
-        handleError("API configuration error. Please check your environment variables.");
+        console.error("API_BASE_URL is not defined. Please set VITE_API_BASE_URL in your .env file");
+        handleError("API configuration error. Please check your environment variables. VITE_API_BASE_URL is not set.");
         return;
       }
+      console.log("Attempting signup with API_BASE_URL:", API_BASE_URL);
       const { data } = await axios.post(
         `${API_BASE_URL}/signup`,
         { username, email, password },
@@ -63,7 +65,24 @@ function Signup() {
       }
     } catch (error) {
       console.error("Signup error:", error);
-      const errorMessage = error.response?.data?.message || error.message || "Something went wrong. Please try again.";
+      let errorMessage = "Something went wrong. Please try again.";
+      
+      // Handle network errors specifically
+      if (error.code === 'ERR_NETWORK' || error.message === 'Network Error') {
+        errorMessage = "Network error: Unable to connect to server. Please check if the backend server is running.";
+      } else if (error.code === 'ECONNREFUSED') {
+        errorMessage = "Connection refused: Backend server is not running or not accessible.";
+      } else if (error.response) {
+        // Server responded with error status
+        errorMessage = error.response.data?.message || `Server error: ${error.response.status}`;
+      } else if (error.request) {
+        // Request was made but no response received
+        errorMessage = "No response from server. Please check your network connection and ensure the backend is running.";
+      } else {
+        // Something else happened
+        errorMessage = error.message || "An unexpected error occurred.";
+      }
+      
       handleError(errorMessage);
       sessionStorage.removeItem("toastShown");
     }
